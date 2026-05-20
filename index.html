@@ -99,6 +99,15 @@ section{position:relative;padding:7rem 2rem;}
 /* ─ RECURSOS ─ */
 .recursos{background:var(--paper);}
 .recursos h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:500;color:var(--ink);margin-bottom:2rem;letter-spacing:-.02em;}
+.rec-nav{display:flex;gap:.4rem;margin-bottom:1.6rem;padding-bottom:1.2rem;border-bottom:1px solid var(--line);flex-wrap:wrap;align-items:center;}
+.rec-nav-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(42,29,20,.4);margin-right:1rem;}
+.rec-tab{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;padding:.5rem 1rem;border:1px solid var(--line);background:transparent;color:var(--ink-soft);cursor:pointer;transition:all .25s;}
+.rec-tab:hover{border-color:var(--ochre);color:var(--ink);}
+.rec-tab.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+.rec-tab .rec-tab-count{opacity:.5;margin-left:.4rem;font-size:.6rem;}
+.rec-panel{display:none;}
+.rec-panel.active{display:block;animation:recFade .4s ease;}
+@keyframes recFade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
 .rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
 .rec-card{background:var(--paper-deep);border:1px solid rgba(42,29,20,.22);padding:1.5rem;transition:border-color .3s;}
 .rec-card:hover{border-color:var(--ochre);}
@@ -367,24 +376,56 @@ footer{border-top-color:var(--line)!important;}
 <section class="recursos">
   <div class="wrap">
     <h2>Herramientas del curso</h2>
-    <div class="rec-grid">
-      <div class="rec-card">
-        <div class="rec-label">Gratis · Correo institucional</div>
-        <div class="rec-name">GitHub Student Pack</div>
-        <div class="rec-desc">Copilot Pro, créditos cloud, dominios y +100 herramientas premium. <em>El paso uno.</em></div>
-        <a class="rec-link" href="https://education.github.com/pack" target="_blank">education.github.com/pack →</a>
+
+    <nav class="rec-nav" role="tablist">
+      <span class="rec-nav-label">Categoría</span>
+      <button class="rec-tab active" data-tab="general" role="tab" aria-selected="true">General <span class="rec-tab-count">3</span></button>
+      <button class="rec-tab" data-tab="git" role="tab" aria-selected="false">Git <span class="rec-tab-count">3</span></button>
+    </nav>
+
+    <div class="rec-panel active" data-panel="general" role="tabpanel">
+      <div class="rec-grid">
+        <div class="rec-card">
+          <div class="rec-label">Gratis · Correo institucional</div>
+          <div class="rec-name">GitHub Student Pack</div>
+          <div class="rec-desc">Copilot Pro, créditos cloud, dominios y +100 herramientas premium. <em>El paso uno.</em></div>
+          <a class="rec-link" href="https://education.github.com/pack" target="_blank">education.github.com/pack →</a>
+        </div>
+        <div class="rec-card">
+          <div class="rec-label">Gratis · Correo institucional</div>
+          <div class="rec-name">JetBrains for Students</div>
+          <div class="rec-desc">PyCharm, IntelliJ, WebStorm y GoLand. <em>Los IDEs que usan en producción las empresas que los van a entrevistar.</em></div>
+          <a class="rec-link" href="https://www.jetbrains.com/community/education/" target="_blank">jetbrains.com/community/education →</a>
+        </div>
+        <div class="rec-card">
+          <div class="rec-label">Obligatorio · Repositorio del proyecto</div>
+          <div class="rec-name">GitHub</div>
+          <div class="rec-desc">Todo el trabajo del curso vive en GitHub. <em>Sin repositorio, no existió.</em> El proyecto integrador es público.</div>
+          <a class="rec-link" href="https://github.com" target="_blank">github.com →</a>
+        </div>
       </div>
-      <div class="rec-card">
-        <div class="rec-label">Gratis · Correo institucional</div>
-        <div class="rec-name">JetBrains for Students</div>
-        <div class="rec-desc">PyCharm, IntelliJ, WebStorm y GoLand. <em>Los IDEs que usan en producción las empresas que los van a entrevistar.</em></div>
-        <a class="rec-link" href="https://www.jetbrains.com/community/education/" target="_blank">jetbrains.com/community/education →</a>
-      </div>
-      <div class="rec-card">
-        <div class="rec-label">Obligatorio · Repositorio del proyecto</div>
-        <div class="rec-name">GitHub</div>
-        <div class="rec-desc">Todo el trabajo del curso vive en GitHub. <em>Sin repositorio, no existió.</em> El proyecto integrador es público.</div>
-        <a class="rec-link" href="https://github.com" target="_blank">github.com →</a>
+    </div>
+
+    <div class="rec-panel" data-panel="git" role="tabpanel">
+      <div class="rec-grid">
+        <div class="rec-card">
+          <div class="rec-label">Oficial · Documentación y descarga</div>
+          <div class="rec-name">Git SCM</div>
+          <div class="rec-desc">Sitio oficial de Git: instalación para todos los sistemas y documentación completa. <em>La fuente de la verdad.</em></div>
+          <a class="rec-link" href="https://git-scm.com" target="_blank">git-scm.com →</a>
+        </div>
+        <div class="rec-card">
+          <div class="rec-label">Práctica · Juego en inglés</div>
+          <div class="rec-name">Git Mastery</div>
+          <div class="rec-desc">Retos interactivos para dominar Git desde cero. <em>Aprender haciendo, no leyendo.</em></div>
+          <a class="rec-link" href="https://gitmastery.me" target="_blank">gitmastery.me →</a>
+        </div>
+        <div class="rec-card">
+          <div class="rec-label">Práctica · Juego en español</div>
+          <div class="rec-name">Learn Git Branching</div>
+          <div class="rec-desc">Visualiza ramas, merges y rebases en un sandbox interactivo. <em>La mejor forma de entender el grafo de Git.</em></div>
+          <a class="rec-link" href="https://learngitbranching.js.org/?locale=es_ES" target="_blank">learngitbranching.js.org →</a>
+        </div>
       </div>
     </div>
   </div>
@@ -566,6 +607,21 @@ function buildSessions() {
 }
 
 buildSessions();
+
+// ─── RECURSOS TABS ───────────────────────────────────────────────────────────
+document.querySelectorAll('.rec-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    document.querySelectorAll('.rec-tab').forEach(t => {
+      const active = t.dataset.tab === target;
+      t.classList.toggle('active', active);
+      t.setAttribute('aria-selected', active);
+    });
+    document.querySelectorAll('.rec-panel').forEach(p => {
+      p.classList.toggle('active', p.dataset.panel === target);
+    });
+  });
+});
 
 // ─── REVEAL ON SCROLL ────────────────────────────────────────────────────────
 const obs = new IntersectionObserver(es => {

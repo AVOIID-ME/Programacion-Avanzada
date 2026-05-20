@@ -438,6 +438,60 @@ section{position:relative;padding:8rem 2rem;}
   .hev{grid-template-columns:1fr;}
   .gtip-examples{grid-template-columns:1fr;}
 }
+
+/* ── Git Animation Visualizer ──────────────────────────────────── */
+.git-anim{margin:3rem 0 4rem;background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--blood);padding:2rem;position:relative;}
+.git-anim::before{content:'Visualizador interactivo';position:absolute;top:-.75rem;left:1.8rem;background:var(--paper-deep);padding:0 .9rem;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;color:var(--blood);}
+.ga-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;}
+.ga-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--ink);font-weight:500;line-height:1.3;}
+.ga-title em{font-style:italic;color:var(--blood);}
+.ga-controls{display:flex;gap:.4rem;}
+.ga-controls button{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.1em;padding:.55rem .9rem;background:var(--paper);border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.ga-controls button:hover{border-color:var(--blood);color:var(--blood);}
+.ga-controls button.active{background:var(--blood);color:var(--paper);border-color:var(--blood);}
+.ga-controls button:disabled{opacity:.35;cursor:not-allowed;}
+.ga-controls button:disabled:hover{border-color:var(--line);color:var(--ink-soft);}
+.ga-step-bar{display:flex;gap:.3rem;margin-bottom:1.3rem;flex-wrap:wrap;align-items:center;}
+.ga-dot{width:8px;height:8px;border-radius:50%;background:var(--line);transition:all .3s;}
+.ga-dot.done{background:var(--olive);}
+.ga-dot.cur{background:var(--blood);transform:scale(1.5);box-shadow:0 0 0 3px rgba(160,36,24,.15);}
+.ga-step-label{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:rgba(42,29,20,.45);letter-spacing:.15em;margin-left:.6rem;text-transform:uppercase;}
+.ga-stage{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1.3rem;min-height:260px;}
+.ga-zone{background:var(--paper-deep);border:1px dashed rgba(42,29,20,.25);padding:1rem .8rem;position:relative;transition:all .35s;display:flex;flex-direction:column;}
+.ga-zone.active{border-style:solid;border-color:var(--blood);background:var(--paper);box-shadow:0 0 0 3px rgba(160,36,24,.08);}
+.ga-zone-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:.4rem;padding-bottom:.5rem;border-bottom:1px solid rgba(42,29,20,.12);}
+.ga-zone-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.78rem;color:rgba(42,29,20,.42);margin-bottom:.8rem;}
+.ga-zone-body{flex:1;display:flex;flex-direction:column;gap:.4rem;justify-content:flex-start;}
+.ga-empty{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:rgba(42,29,20,.32);font-style:italic;text-align:center;padding:1.5rem .5rem;}
+.ga-file{background:var(--paper);border:1px solid var(--line);padding:.45rem .65rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--ink);display:flex;align-items:center;gap:.4rem;animation:gaSlide .5s cubic-bezier(.16,1,.3,1);}
+.ga-file::before{font-weight:700;font-size:.7rem;width:14px;display:inline-block;text-align:center;}
+.ga-file.untracked{border-color:var(--blood);background:rgba(160,36,24,.05);}
+.ga-file.untracked::before{content:'?';color:var(--blood);}
+.ga-file.modified{border-color:var(--ochre);background:rgba(181,133,42,.05);}
+.ga-file.modified::before{content:'M';color:var(--ochre);}
+.ga-file.staged{border-color:var(--olive);background:rgba(93,102,56,.06);}
+.ga-file.staged::before{content:'+';color:var(--olive);}
+.ga-branch{font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--ochre);background:rgba(181,133,42,.1);padding:.18rem .5rem;border:1px solid rgba(181,133,42,.4);display:inline-block;align-self:flex-start;margin-bottom:.7rem;letter-spacing:.05em;}
+.ga-commit{display:flex;align-items:center;gap:.6rem;padding:.4rem 0;position:relative;animation:gaPop .5s cubic-bezier(.16,1,.3,1);}
+.ga-commit:not(:last-child)::after{content:'';position:absolute;left:7px;top:1.5rem;width:1px;height:.8rem;background:var(--blood);}
+.ga-commit-dot{width:14px;height:14px;border-radius:50%;background:var(--blood);border:2px solid var(--paper);box-shadow:0 0 0 1px var(--blood);flex-shrink:0;}
+.ga-commit-text{flex:1;min-width:0;}
+.ga-commit-hash{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--blood);font-weight:700;}
+.ga-commit-msg{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.78rem;color:var(--ink-soft);line-height:1.2;}
+@keyframes gaSlide{from{opacity:0;transform:translateX(-12px);}to{opacity:1;transform:translateX(0);}}
+@keyframes gaPop{from{opacity:0;transform:scale(.7);}to{opacity:1;transform:scale(1);}}
+.ga-terminal{background:var(--paper-deep);border:1px solid var(--line);padding:1.1rem 1.4rem;}
+.ga-term-row{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--ink);margin-bottom:.6rem;min-height:1.4rem;}
+.ga-prompt{color:var(--blood);margin-right:.5rem;font-weight:700;}
+.ga-cmd{color:var(--ink);font-weight:500;}
+.ga-cmd-cursor{display:inline-block;width:7px;height:1em;background:var(--blood);margin-left:2px;vertical-align:text-bottom;animation:gaBlink 1s infinite;}
+@keyframes gaBlink{0%,50%{opacity:1;}51%,100%{opacity:0;}}
+.ga-explain{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--ink-soft);line-height:1.5;min-height:3rem;padding-top:.6rem;border-top:1px solid var(--line);margin-top:.5rem;}
+.ga-explain em{color:var(--ink);font-style:italic;}
+.ga-explain strong{color:var(--blood);font-weight:500;font-style:normal;}
+@media(max-width:900px){.ga-stage{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.ga-stage{grid-template-columns:1fr;}.ga-controls{width:100%;}.ga-controls button{flex:1;}.ga-header{flex-direction:column;align-items:stretch;}}
+
 </style>
 </head>
 <body>
@@ -755,6 +809,48 @@ section{position:relative;padding:8rem 2rem;}
     <p class="marker">IX &nbsp;·&nbsp; El ritual del commit</p>
     <h2>Sin commits, no exististe.<br><em>Sin push, nadie lo sabe.</em></h2>
     <p class="ginto">Git no es opcional. Git es la memoria del programador — el diario que no olvida, no miente y no acepta excusas. Lo que no está en un repositorio con commits limpios, para el resto del mundo, no existe. Aprendan el ritual ahora, de una vez, y practícenlo desde el primer día.</p>
+    <div class="git-anim">
+      <div class="ga-header">
+        <div class="ga-title">El grafo de Git en movimiento — <em>vean cómo cada comando mueve las piezas.</em></div>
+        <div class="ga-controls">
+          <button id="ga-reset">⟲ Reiniciar</button>
+          <button id="ga-prev">← Atrás</button>
+          <button id="ga-play">▶ Reproducir</button>
+          <button id="ga-next">Siguiente →</button>
+        </div>
+      </div>
+
+      <div class="ga-step-bar" id="ga-bar"></div>
+
+      <div class="ga-stage">
+        <div class="ga-zone" data-zone="working">
+          <div class="ga-zone-label">Working Directory</div>
+          <div class="ga-zone-sub">Tus archivos en el disco</div>
+          <div class="ga-zone-body" id="ga-working"></div>
+        </div>
+        <div class="ga-zone" data-zone="staging">
+          <div class="ga-zone-label">Staging Area</div>
+          <div class="ga-zone-sub">Listo para el próximo commit</div>
+          <div class="ga-zone-body" id="ga-staging"></div>
+        </div>
+        <div class="ga-zone" data-zone="local">
+          <div class="ga-zone-label">Local Repository</div>
+          <div class="ga-zone-sub">Historial en tu máquina</div>
+          <div class="ga-zone-body" id="ga-local"></div>
+        </div>
+        <div class="ga-zone" data-zone="remote">
+          <div class="ga-zone-label">Remote · GitHub</div>
+          <div class="ga-zone-sub">El mundo lo puede ver</div>
+          <div class="ga-zone-body" id="ga-remote"></div>
+        </div>
+      </div>
+
+      <div class="ga-terminal">
+        <div class="ga-term-row"><span class="ga-prompt">$</span><span class="ga-cmd" id="ga-cmd"></span><span class="ga-cmd-cursor" id="ga-cursor"></span></div>
+        <div class="ga-explain" id="ga-explain">Pulsa <strong>Reproducir</strong> para ver el flujo completo, o <strong>Siguiente</strong> para avanzar paso a paso.</div>
+      </div>
+    </div>
+
 
     <div class="gpipe">
       <div class="gstep">
@@ -907,6 +1003,126 @@ const bar=document.querySelector('.progress');
 window.addEventListener('scroll',()=>{const h=document.documentElement;bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';});
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('section > .wrap,section > .wrap-narrow,.sg,.hero-mid,.hero-bottom').forEach(el=>{el.classList.add('reveal');obs.observe(el);});
+
+// ── Git animation ─────────────────────────────────────────────────
+const gaSteps = [
+  { cmd:'', note:'INICIO',
+    explain:'Una carpeta. Archivos. Nada más. Aún no es un repositorio — todavía. Git va a cambiar eso.',
+    working:[], staging:[], local:null, remote:null, highlight:'' },
+  { cmd:'git init', note:'INICIALIZAR',
+    explain:'<strong>init</strong> significa iniciar. Le dices a Git: <em>vigila esta carpeta</em>. Desde aquí, todo cambio queda registrado.',
+    working:[], staging:[], local:[], remote:null, highlight:'local' },
+  { cmd:'touch hello.py', note:'CREAR ARCHIVO',
+    explain:'Creas <em>hello.py</em>. Para ti es código. Para Git todavía es un archivo desconocido — <strong>untracked</strong>.',
+    working:[{n:'hello.py',s:'untracked'}], staging:[], local:[], remote:null, highlight:'working' },
+  { cmd:'git status', note:'VER ESTADO',
+    explain:'<strong>status</strong> es el espejo. Te muestra exactamente qué ve Git. Nada más útil que un comando que solo te dice la verdad.',
+    working:[{n:'hello.py',s:'untracked'}], staging:[], local:[], remote:null, highlight:'working' },
+  { cmd:'git add hello.py', note:'AGREGAR',
+    explain:'<strong>add</strong> mueve el archivo al área de preparación. Aún no es definitivo — es como meter cosas en una caja <em>antes de cerrarla</em>.',
+    working:[], staging:[{n:'hello.py',s:'staged'}], local:[], remote:null, highlight:'staging' },
+  { cmd:'git commit -m "Add hello world"', note:'CONFIRMAR',
+    explain:'<strong>commit</strong> cierra la caja, le pone una etiqueta (a3f1c2d) y la guarda. <em>Tu primer commit existe. Eso ya no se borra.</em>',
+    working:[], staging:[], local:[{h:'a3f1c2d',m:'Add hello world'}], remote:null, highlight:'local' },
+  { cmd:'touch README.md', note:'OTRO ARCHIVO',
+    explain:'Sigues trabajando. Creas un README. Git inmediatamente lo nota — otro archivo <strong>untracked</strong>.',
+    working:[{n:'README.md',s:'untracked'}], staging:[], local:[{h:'a3f1c2d',m:'Add hello world'}], remote:null, highlight:'working' },
+  { cmd:'git add .', note:'AGREGAR TODO',
+    explain:'El punto ( <em>.</em> ) significa <em>todo</em>. <strong>add .</strong> mueve todos los cambios al staging de golpe. Útil cuando confías en lo que hiciste.',
+    working:[], staging:[{n:'README.md',s:'staged'}], local:[{h:'a3f1c2d',m:'Add hello world'}], remote:null, highlight:'staging' },
+  { cmd:'git commit -m "Add README"', note:'SEGUNDO COMMIT',
+    explain:'Segundo commit (b7e4d1a). <em>El grafo crece</em>. Cada nodo es un punto en el tiempo al que puedes regresar — para siempre.',
+    working:[], staging:[], local:[{h:'a3f1c2d',m:'Add hello world'},{h:'b7e4d1a',m:'Add README'}], remote:null, highlight:'local' },
+  { cmd:'git push origin main', note:'SUBIR',
+    explain:'<strong>push</strong> sincroniza con GitHub. Hasta aquí tu trabajo vivía solo en tu máquina. Ahora <em>vive en internet</em>.',
+    working:[], staging:[], local:[{h:'a3f1c2d',m:'Add hello world'},{h:'b7e4d1a',m:'Add README'}], remote:[{h:'a3f1c2d',m:'Add hello world'},{h:'b7e4d1a',m:'Add README'}], highlight:'remote' },
+  { cmd:'✓ Ciclo completo', note:'LISTO',
+    explain:'<em>Working → Staging → Local → Remote.</em> Todo Git es repetir esto. Lo van a hacer mil veces. Cada vez con más confianza.',
+    working:[], staging:[], local:[{h:'a3f1c2d',m:'Add hello world'},{h:'b7e4d1a',m:'Add README'}], remote:[{h:'a3f1c2d',m:'Add hello world'},{h:'b7e4d1a',m:'Add README'}], highlight:'' },
+];
+
+let gaIdx = 0;
+let gaTimer = null;
+const $ = id => document.getElementById(id);
+
+function gaRenderFiles(target, files){
+  target.innerHTML = files.length === 0
+    ? '<div class="ga-empty">— vacío —</div>'
+    : files.map(f => '<div class="ga-file '+f.s+'">'+f.n+'</div>').join('');
+}
+function gaRenderCommits(target, commits, emptyMsg){
+  if (commits === null){
+    target.innerHTML = '<div class="ga-empty">'+emptyMsg+'</div>';
+    return;
+  }
+  if (commits.length === 0){
+    target.innerHTML = '<div class="ga-branch">main</div><div class="ga-empty">— inicializado, sin commits —</div>';
+    return;
+  }
+  // Latest commits at top (reverse order)
+  const cs = [...commits].reverse();
+  target.innerHTML = '<div class="ga-branch">main</div>' + cs.map(c =>
+    '<div class="ga-commit"><div class="ga-commit-dot"></div><div class="ga-commit-text"><div class="ga-commit-hash">'+c.h+'</div><div class="ga-commit-msg">'+c.m+'</div></div></div>'
+  ).join('');
+}
+
+function gaRenderBar(){
+  $('ga-bar').innerHTML = gaSteps.map((s,i) =>
+    '<div class="ga-dot '+(i<gaIdx?'done':i===gaIdx?'cur':'')+'"></div>'
+  ).join('') + '<span class="ga-step-label">Paso '+(gaIdx+1)+' de '+gaSteps.length+' &middot; '+gaSteps[gaIdx].note+'</span>';
+}
+
+function gaRender(){
+  const s = gaSteps[gaIdx];
+  gaRenderFiles($('ga-working'), s.working);
+  gaRenderFiles($('ga-staging'), s.staging);
+  gaRenderCommits($('ga-local'), s.local, '— sin inicializar —');
+  gaRenderCommits($('ga-remote'), s.remote, '— sin sincronizar —');
+  $('ga-cmd').textContent = s.cmd;
+  $('ga-explain').innerHTML = s.explain;
+  $('ga-cursor').style.display = s.cmd === '' || s.cmd.startsWith('✓') ? 'none' : 'inline-block';
+  document.querySelectorAll('.ga-zone').forEach(z => z.classList.remove('active'));
+  if (s.highlight){
+    const z = document.querySelector('[data-zone="'+s.highlight+'"]');
+    if (z) z.classList.add('active');
+  }
+  $('ga-prev').disabled = gaIdx === 0;
+  $('ga-next').disabled = gaIdx === gaSteps.length - 1;
+  gaRenderBar();
+}
+
+function gaNext(){ if (gaIdx < gaSteps.length - 1){ gaIdx++; gaRender(); } }
+function gaPrev(){ if (gaIdx > 0){ gaIdx--; gaRender(); } }
+function gaReset(){
+  gaIdx = 0;
+  if (gaTimer){ clearInterval(gaTimer); gaTimer = null; $('ga-play').textContent = '▶ Reproducir'; $('ga-play').classList.remove('active'); }
+  gaRender();
+}
+function gaPlay(){
+  const btn = $('ga-play');
+  if (gaTimer){
+    clearInterval(gaTimer); gaTimer = null;
+    btn.textContent = '▶ Reproducir'; btn.classList.remove('active');
+    return;
+  }
+  if (gaIdx === gaSteps.length - 1){ gaIdx = 0; gaRender(); }
+  btn.textContent = '⏸ Pausar'; btn.classList.add('active');
+  gaTimer = setInterval(() => {
+    if (gaIdx >= gaSteps.length - 1){
+      clearInterval(gaTimer); gaTimer = null;
+      btn.textContent = '▶ Reproducir'; btn.classList.remove('active');
+      return;
+    }
+    gaNext();
+  }, 2800);
+}
+
+$('ga-next').addEventListener('click', gaNext);
+$('ga-prev').addEventListener('click', gaPrev);
+$('ga-reset').addEventListener('click', gaReset);
+$('ga-play').addEventListener('click', gaPlay);
+gaRender();
+
 </script>
 </body>
 </html>
