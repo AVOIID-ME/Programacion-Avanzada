@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión II — El mundo como objetos — Programación Avanzada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#EFE6D2;--paper-deep:#E6DBC2;--ink:#2A1D14;--ink-soft:#4A3A2C;--blood:#A02418;--blood-dark:#6E1810;--ochre:#B5852A;--olive:#5D6638;--line:rgba(42,29,20,.18);}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--paper);color:var(--ink);font-family:'Crimson Pro',Georgia,serif;font-size:18px;line-height:1.6;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.11 0 0 0 0 0.08 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='h'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.35' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.13 0 0 0 0 0.08 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23h)'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;mix-blend-mode:multiply;}
+
+/* Nav */
+.course-nav{position:sticky;top:0;z-index:999;background:rgba(239,230,210,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:.75rem 2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;}
+.course-nav a{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:var(--ink-soft);transition:color .2s;}
+.course-nav a:hover{color:var(--blood);}
+.course-nav a.back::before{content:'← ';color:var(--blood);}
+.course-nav a.next::after{content:' →';color:var(--blood);}
+.course-nav .session-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(42,29,20,.4);}
+
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--blood);z-index:1001;width:0;}
+
+section{position:relative;padding:5rem 2rem;}
+.wrap{max-width:1080px;margin:0 auto;}
+.wrap-n{max-width:720px;margin:0 auto;}
+.marker{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--blood);margin-bottom:1rem;display:flex;align-items:center;gap:1rem;}
+.marker::after{content:'';flex:1;height:1px;background:var(--line);}
+
+/* Hero */
+.hero{min-height:78vh;display:flex;flex-direction:column;justify-content:center;padding:4rem 2rem;overflow:hidden;position:relative;}
+.hero-float{position:absolute;font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--blood);opacity:.13;letter-spacing:.05em;pointer-events:none;white-space:nowrap;animation:floaty 14s ease-in-out infinite;}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(var(--r,0deg));}50%{transform:translateY(-22px) rotate(var(--r,0deg));}}
+.hero-inner{position:relative;z-index:2;max-width:1080px;margin:0 auto;width:100%;}
+.hero-label{font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(42,29,20,.5);margin-bottom:1.5rem;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(3rem,8vw,7rem);line-height:.98;letter-spacing:-.03em;color:var(--ink);}
+.hero h1 em{font-style:italic;color:var(--blood);}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.2rem,2.5vw,1.8rem);color:var(--ink-soft);margin-top:1.5rem;max-width:600px;}
+
+/* Generic intro line */
+.lead{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:500;line-height:1.25;letter-spacing:-.01em;color:var(--ink);}
+.lead em{font-style:italic;color:var(--blood);}
+.subtle{font-size:1.05rem;color:var(--ink-soft);margin-top:1rem;max-width:640px;}
+
+/* ─── WIDGET SHELL ─────────────────────────────── */
+.widget{background:var(--paper-deep);border:1px solid var(--line);border-left:3px solid var(--blood);padding:2.2rem;margin-top:2.5rem;position:relative;}
+.widget::before{content:attr(data-tag);position:absolute;top:-.7rem;left:1.8rem;background:var(--paper);padding:0 .9rem;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.25em;text-transform:uppercase;color:var(--blood);}
+.w-prompt{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.25rem;color:var(--ink-soft);margin-bottom:1.5rem;}
+.w-prompt em{color:var(--blood);font-style:italic;}
+.w-controls{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.5rem;}
+.btn{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;padding:.6rem 1rem;background:var(--paper);border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;transition:all .2s;text-transform:uppercase;}
+.btn:hover{border-color:var(--blood);color:var(--blood);}
+.btn.on{background:var(--blood);color:var(--paper);border-color:var(--blood);}
+.btn-olive.on{background:var(--olive);border-color:var(--olive);}
+
+/* ─── W1: Procedimental vs OOP ─────────────────── */
+.pvo{display:grid;grid-template-columns:1fr;gap:1.5rem;}
+.pvo-stage{background:var(--paper);border:1px solid var(--line);padding:1.8rem;min-height:460px;position:relative;overflow:hidden;}
+.pvo-mode{position:absolute;top:1.2rem;left:1.8rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--blood);z-index:4;}
+.pvo-chip{position:absolute;font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:.4rem .7rem;border-radius:2px;transition:all 1s cubic-bezier(.16,1,.3,1);white-space:nowrap;z-index:3;}
+.pvo-chip.data{background:rgba(181,133,42,.12);border:1px solid var(--ochre);color:var(--ochre);}
+.pvo-chip.fn{background:rgba(160,36,24,.08);border:1px solid var(--blood);color:var(--blood);}
+.pvo-box{position:absolute;border:2px solid var(--olive);background:rgba(93,102,56,.05);border-radius:3px;transition:all 1s cubic-bezier(.16,1,.3,1);opacity:0;}
+.pvo-box-label{position:absolute;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.1em;color:var(--olive);font-weight:700;transition:opacity 1s;opacity:0;}
+
+/* ─── W2: Abstracción ──────────────────────────── */
+.abs-stage{display:grid;grid-template-columns:1.1fr 1fr;gap:1.5rem;align-items:start;}
+.abs-real{background:var(--paper);border:1px solid var(--line);padding:1.5rem;position:relative;min-height:340px;}
+.abs-real-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--ink);margin-bottom:1rem;text-align:center;}
+.abs-icon{font-size:3.5rem;text-align:center;margin:.5rem 0 1rem;}
+.abs-attrs{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;}
+.abs-attr{font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:.35rem .6rem;border:1px solid var(--line);background:var(--paper-deep);color:rgba(42,29,20,.4);transition:all .5s;}
+.abs-attr.keep{border-color:var(--olive);background:rgba(93,102,56,.1);color:var(--olive);font-weight:700;transform:scale(1.05);}
+.abs-attr.drop{opacity:.25;text-decoration:line-through;}
+.abs-class{background:var(--ink);border:1px solid var(--line);padding:1.5rem;min-height:340px;font-family:'JetBrains Mono',monospace;}
+.abs-class-head{color:var(--ochre);font-size:.85rem;margin-bottom:1rem;}
+.abs-class-head .kw{color:#D4956A;}
+.abs-line{font-size:.78rem;color:var(--paper);padding:.25rem 0 .25rem 1.2rem;opacity:0;transition:opacity .5s;}
+.abs-line.show{opacity:1;}
+.abs-line .at{color:#8EAF8B;}
+.abs-line .cm{color:rgba(239,230,210,.4);}
+
+/* ─── W3: Clase → Objetos ──────────────────────── */
+.fac-stage{display:grid;grid-template-columns:240px 1fr;gap:1.5rem;align-items:start;}
+.fac-mold{background:var(--ink);border:2px dashed var(--ochre);padding:1.3rem;font-family:'JetBrains Mono',monospace;position:sticky;top:5rem;}
+.fac-mold-tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ochre);margin-bottom:.8rem;}
+.fac-mold-name{color:#D4956A;font-size:1rem;margin-bottom:.6rem;}
+.fac-mold-name .kw{color:var(--ochre);}
+.fac-mold-attr{font-size:.74rem;color:var(--paper);padding:.2rem 0 .2rem 1rem;}
+.fac-mold-attr .at{color:#8EAF8B;}
+.fac-objects{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.9rem;min-height:200px;}
+.fac-obj{background:var(--paper);border:1px solid var(--olive);border-top:3px solid var(--olive);padding:1rem;animation:objBorn .6s cubic-bezier(.16,1,.3,1);}
+@keyframes objBorn{0%{opacity:0;transform:scale(.6) translateY(20px);}100%{opacity:1;transform:scale(1) translateY(0);}}
+.fac-obj-id{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--olive);letter-spacing:.1em;margin-bottom:.6rem;}
+.fac-obj-row{font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--ink);padding:.15rem 0;}
+.fac-obj-row span{color:var(--blood);}
+.fac-empty{grid-column:1/-1;font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(42,29,20,.4);text-align:center;padding:3rem 1rem;font-size:1.1rem;}
+
+/* ─── W4: Anatomía ─────────────────────────────── */
+.ana-stage{display:grid;grid-template-columns:1fr;gap:1.5rem;align-items:center;justify-items:center;}
+.ana-obj{background:var(--paper);border:2px solid var(--line);border-radius:6px;padding:0;width:300px;overflow:hidden;transition:all .3s;}
+.ana-obj-head{background:var(--ink);color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:.85rem;padding:.8rem 1.2rem;letter-spacing:.05em;}
+.ana-obj-head .em{color:var(--ochre);}
+.ana-section{padding:1rem 1.2rem;transition:all .35s;}
+.ana-section-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.6rem;}
+.ana-attrs{border-bottom:1px solid var(--line);}
+.ana-attrs.lit{background:rgba(181,133,42,.1);}
+.ana-attrs .ana-section-label{color:var(--ochre);}
+.ana-methods.lit{background:rgba(93,102,56,.1);}
+.ana-methods .ana-section-label{color:var(--olive);}
+.ana-row{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--ink);padding:.3rem 0;display:flex;justify-content:space-between;align-items:center;}
+.ana-val{color:var(--blood);font-weight:700;transition:all .3s;}
+.ana-val.bump{animation:bump .5s ease;}
+@keyframes bump{0%{transform:scale(1);color:var(--blood);}40%{transform:scale(1.4);color:var(--olive);}100%{transform:scale(1);color:var(--blood);}}
+.ana-method{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--olive);padding:.3rem 0;cursor:pointer;transition:all .2s;border-radius:2px;}
+.ana-method:hover{color:var(--paper);background:var(--olive);padding-left:.5rem;padding-right:.5rem;}
+.ana-method::before{content:'▸ ';}
+
+/* ─── W5: Mensajes ─────────────────────────────── */
+.msg-stage{display:flex;align-items:center;justify-content:space-around;gap:1rem;min-height:240px;position:relative;flex-wrap:wrap;}
+.msg-obj{background:var(--paper);border:2px solid var(--ink);border-radius:6px;padding:1.2rem;width:200px;text-align:center;transition:all .3s;}
+.msg-obj.pulse{border-color:var(--blood);box-shadow:0 0 0 4px rgba(160,36,24,.1);}
+.msg-obj-name{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--ink-soft);margin-bottom:.6rem;letter-spacing:.05em;}
+.msg-obj-bal{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--ink);transition:all .4s;}
+.msg-obj-bal.up{color:var(--olive);}
+.msg-obj-bal.down{color:var(--blood);}
+.msg-packet{position:absolute;font-family:'JetBrains Mono',monospace;font-size:.74rem;background:var(--blood);color:var(--paper);padding:.4rem .8rem;border-radius:20px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0;white-space:nowrap;z-index:5;}
+.msg-arrow{position:absolute;top:50%;left:18%;right:18%;height:2px;background:linear-gradient(to right,var(--blood),var(--ochre));opacity:.3;}
+
+/* ─── Exercise ─────────────────────────────────── */
+.ex-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem;}
+.ex-card{background:var(--paper-deep);border:1px solid var(--line);border-top:3px solid var(--ochre);padding:1.5rem;text-align:center;}
+.ex-icon{font-size:2.5rem;margin-bottom:.8rem;}
+.ex-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--ink);margin-bottom:.5rem;}
+.ex-hint{font-size:.95rem;color:var(--ink-soft);font-style:italic;}
+
+/* ─── Cierre / Tarea ───────────────────────────── */
+.cierre{background:var(--paper-deep);}
+.cierre .lead em{color:var(--blood);}
+.tarea{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--ochre);padding:2rem;margin-top:2rem;}
+.tarea-tag{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ochre);margin-bottom:1rem;}
+.tarea ol{margin-left:1.3rem;color:var(--ink-soft);}
+.tarea li{padding:.4rem 0;font-size:1.05rem;}
+.tarea li strong{color:var(--ink);}
+.tarea code{font-family:'JetBrains Mono',monospace;font-size:.85rem;background:var(--paper-deep);padding:.1rem .4rem;border:1px solid var(--line);color:var(--blood);}
+
+footer{padding:3rem 2rem;border-top:1px solid var(--line);text-align:center;}
+.foot-meta{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(42,29,20,.4);}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+@media(max-width:860px){
+  section{padding:3.5rem 1.2rem;}
+  .abs-stage,.fac-stage{grid-template-columns:1fr;}
+  .fac-mold{position:relative;top:0;}
+  .ex-grid{grid-template-columns:1fr;}
+  .msg-stage{flex-direction:column;}
+  .msg-arrow{display:none;}
+  .pvo-chip{font-size:.62rem;padding:.32rem .55rem;}
+  .pvo-stage{min-height:500px;}
+}
+@media(max-width:540px){
+  .pvo-chip{font-size:.54rem;padding:.26rem .42rem;}
+  .pvo-stage{min-height:540px;}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+<nav class="course-nav">
+  <a href="sesion-01.html" class="back">Sesión 01</a>
+  <span class="session-label">Sesión 02 · 22.05.2026</span>
+  <a href="../index.html" class="next">Curso</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-float" style="top:14%;left:8%;--r:-4deg">class Persona:</div>
+  <div class="hero-float" style="top:26%;right:10%;--r:3deg;animation-delay:-3s">objeto.metodo()</div>
+  <div class="hero-float" style="bottom:30%;left:14%;--r:2deg;animation-delay:-6s">self.nombre = nombre</div>
+  <div class="hero-float" style="bottom:18%;right:16%;--r:-3deg;animation-delay:-9s">cuenta.depositar(500)</div>
+  <div class="hero-float" style="top:48%;left:42%;--r:1deg;animation-delay:-4.5s">atributos + métodos</div>
+  <div class="hero-inner">
+    <div class="hero-label">Sesión II · POO Conceptual · Ref. Temario 1.1 – 1.2</div>
+    <h1>El mundo<br>como <em>objetos.</em></h1>
+    <p class="hero-sub">Todo lo que te rodea tiene cosas que <em>es</em> y cosas que <em>hace</em>. Programar orientado a objetos es solo aprender a verlo.</p>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section>
+  <div class="wrap-n">
+    <p class="marker">I · La idea</p>
+    <p class="lead">Un coche <em>tiene</em> color y velocidad.<br>Un coche <em>hace</em> acelerar y frenar.<br>Eso es un objeto.</p>
+    <p class="subtle">Nada más. La POO no inventó nada nuevo — solo copió cómo ya piensas el mundo. Hoy lo vemos en movimiento, no en definiciones.</p>
+  </div>
+</section>
+
+<!-- W1: Procedimental vs OOP -->
+<section>
+  <div class="wrap">
+    <p class="marker">II · El cambio de paradigma</p>
+    <p class="lead">Antes: datos sueltos y funciones por todos lados.<br>Después: <em>todo junto, en su lugar.</em></p>
+    <div class="widget" data-tag="Pulsa el botón">
+      <div class="w-prompt">Mira qué pasa cuando los datos y las funciones que van juntos… <em>se juntan.</em></div>
+      <div class="pvo">
+        <div class="pvo-stage" id="pvo-stage">
+          <div class="pvo-mode" id="pvo-mode">Modo: Procedimental — el caos</div>
+        </div>
+      </div>
+      <div class="w-controls">
+        <button class="btn" id="pvo-toggle">▶ Organizar en objetos</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- W2: Abstracción -->
+<section>
+  <div class="wrap">
+    <p class="marker">III · Abstracción</p>
+    <p class="lead">Un coche real tiene <em>mil</em> detalles.<br>Tu programa solo necesita los que importan.</p>
+    <p class="subtle">Y "lo que importa" depende de para qué. El mismo coche se modela distinto en una app de renta que en un taller. Cambia el contexto:</p>
+    <div class="widget" data-tag="Cambia el contexto">
+      <div class="abs-stage">
+        <div class="abs-real">
+          <div class="abs-real-title">Coche real</div>
+          <div class="abs-icon">🚗</div>
+          <div class="abs-attrs" id="abs-attrs"></div>
+        </div>
+        <div class="abs-class">
+          <div class="abs-class-head"><span class="kw">class</span> Coche: <span id="abs-ctx-label" style="color:rgba(239,230,210,.4)"># renta</span></div>
+          <div id="abs-lines"></div>
+        </div>
+      </div>
+      <div class="w-controls">
+        <button class="btn on" id="abs-renta">🔑 App de renta</button>
+        <button class="btn" id="abs-taller">🔧 Taller mecánico</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- W3: Clase vs Objeto -->
+<section>
+  <div class="wrap">
+    <p class="marker">IV · Clase vs Objeto</p>
+    <p class="lead">La clase es el <em>molde.</em><br>Los objetos son lo que sale del molde.</p>
+    <p class="subtle">Una clase, infinitos objetos — cada uno con sus propios valores. Pulsa para fabricar:</p>
+    <div class="widget" data-tag="Fabrica objetos">
+      <div class="fac-stage">
+        <div class="fac-mold">
+          <div class="fac-mold-tag">La clase · el molde</div>
+          <div class="fac-mold-name"><span class="kw">class</span> Persona:</div>
+          <div class="fac-mold-attr"><span class="at">nombre</span></div>
+          <div class="fac-mold-attr"><span class="at">edad</span></div>
+          <div class="fac-mold-attr"><span class="at">ciudad</span></div>
+        </div>
+        <div class="fac-objects" id="fac-objects">
+          <div class="fac-empty">Ningún objeto todavía.<br>El molde está listo — úsalo.</div>
+        </div>
+      </div>
+      <div class="w-controls">
+        <button class="btn on" id="fac-make">+ Instanciar objeto</button>
+        <button class="btn" id="fac-clear">Limpiar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- W4: Anatomía -->
+<section>
+  <div class="wrap">
+    <p class="marker">V · Anatomía de un objeto</p>
+    <p class="lead">Un objeto guarda <em>datos</em> (atributos)<br>y sabe hacer <em>cosas</em> (métodos).</p>
+    <p class="subtle">Y los métodos pueden cambiar los atributos. Pulsa un método y observa:</p>
+    <div class="widget" data-tag="Pulsa los métodos">
+      <div class="ana-stage">
+        <div class="ana-obj">
+          <div class="ana-obj-head">objeto: <span class="em">ana</span> &nbsp;·&nbsp; Persona</div>
+          <div class="ana-section ana-attrs lit" id="ana-attrs">
+            <div class="ana-section-label">Atributos · lo que ES</div>
+            <div class="ana-row">nombre <span class="ana-val">"Ana"</span></div>
+            <div class="ana-row">edad <span class="ana-val" id="ana-edad">27</span></div>
+            <div class="ana-row">energía <span class="ana-val" id="ana-energia">100</span></div>
+          </div>
+          <div class="ana-section ana-methods" id="ana-methods">
+            <div class="ana-section-label">Métodos · lo que HACE</div>
+            <div class="ana-method" id="m-cumple">cumplir_años()</div>
+            <div class="ana-method" id="m-corre">correr()</div>
+            <div class="ana-method" id="m-duerme">dormir()</div>
+          </div>
+        </div>
+      </div>
+      <div class="w-prompt" id="ana-msg" style="margin-top:1.3rem;margin-bottom:0;text-align:center;">↑ Pulsa un método y mira cómo cambian los atributos.</div>
+    </div>
+  </div>
+</section>
+
+<!-- W5: Mensajes -->
+<section>
+  <div class="wrap">
+    <p class="marker">VI · Mensajes entre objetos</p>
+    <p class="lead">Los objetos se comunican <em>llamándose</em> métodos.<br>A eso le decimos enviar un mensaje.</p>
+    <p class="subtle">Ana le transfiere a Luis. Un objeto le habla a otro. Pulsa y míralo viajar:</p>
+    <div class="widget" data-tag="Envía el mensaje">
+      <div class="msg-stage">
+        <div class="msg-arrow"></div>
+        <div class="msg-obj" id="msg-a">
+          <div class="msg-obj-name">cuenta_ana</div>
+          <div class="msg-obj-bal" id="bal-a">$1,000</div>
+        </div>
+        <div class="msg-packet" id="msg-packet">transferir($300) →</div>
+        <div class="msg-obj" id="msg-b">
+          <div class="msg-obj-name">cuenta_luis</div>
+          <div class="msg-obj-bal" id="bal-b">$500</div>
+        </div>
+      </div>
+      <div class="w-controls">
+        <button class="btn on" id="msg-send">cuenta_ana.transferir(cuenta_luis, 300)</button>
+        <button class="btn" id="msg-reset">⟲ Reiniciar saldos</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXERCISE -->
+<section>
+  <div class="wrap">
+    <p class="marker">VII · Tu turno · en equipo</p>
+    <p class="lead">Modela estos 3 objetos.<br>¿Qué <em>son</em>? ¿Qué <em>hacen</em>?</p>
+    <p class="subtle">15 minutos en equipo. Para cada uno: lista 3 atributos y 2 métodos. Luego cada quien presenta uno al grupo.</p>
+    <div class="ex-grid">
+      <div class="ex-card">
+        <div class="ex-icon">🧑</div>
+        <div class="ex-name">Persona</div>
+        <div class="ex-hint">¿edad? ¿saludar()?</div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-icon">🏍️</div>
+        <div class="ex-name">Vehículo</div>
+        <div class="ex-hint">¿velocidad? ¿acelerar()?</div>
+      </div>
+      <div class="ex-card">
+        <div class="ex-icon">🏦</div>
+        <div class="ex-name">Cuenta bancaria</div>
+        <div class="ex-hint">¿saldo? ¿depositar()?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CIERRE -->
+<section class="cierre">
+  <div class="wrap-n">
+    <p class="marker">VIII · Para el viernes</p>
+    <p class="lead">Si entendiste que un objeto <em>es cosas</em> y <em>hace cosas</em>,<br>ya entendiste el 80% de la POO.</p>
+    <div class="tarea">
+      <div class="tarea-tag">Tarea · sube a tu repo</div>
+      <ol>
+        <li>Elige <strong>un objeto de tu vida real</strong> (tu mochila, tu celular, tu mascota).</li>
+        <li>En un archivo <code>objeto.md</code>, lista <strong>3 atributos</strong> y <strong>3 métodos</strong>.</li>
+        <li>Escribe el esqueleto de la clase en Python — solo <code>class</code>, atributos y nombres de métodos. Sin código adentro todavía.</li>
+        <li><strong>Commit y push.</strong> El viernes lo convertimos en código real.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-meta">Programación Avanzada · MCT158 · Carlos D. Vaca Ramírez · Unitec Atizapán 2026-3</div>
+</footer>
+
+<script>
+// Progress bar
+window.addEventListener('scroll',()=>{const h=document.documentElement;const p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;document.getElementById('prog').style.width=p+'%';});
+
+// Reveal
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('section>.wrap,section>.wrap-n').forEach(el=>{el.classList.add('reveal');obs.observe(el);});
+
+const $=id=>document.getElementById(id);
+
+// ─── W1: Procedimental vs OOP ──────────────────────────────────
+const pvoChips=[
+  {t:'nombre = "Ana"',type:'data',grp:0},
+  {t:'edad = 27',type:'data',grp:0},
+  {t:'saludar(nombre)',type:'fn',grp:0},
+  {t:'cumplir_años(edad)',type:'fn',grp:0},
+  {t:'marca = "Honda"',type:'data',grp:1},
+  {t:'velocidad = 0',type:'data',grp:1},
+  {t:'acelerar(velocidad)',type:'fn',grp:1},
+  {t:'frenar(velocidad)',type:'fn',grp:1},
+];
+// scattered positions (procedural) — capped to avoid overflow/overlap
+const pvoScatter=[[5,16],[48,20],[14,35],[44,40],[6,57],[46,61],[12,77],[42,82]];
+const pvoRot=[-3,3,-2,4,-3,2,-4,3];
+// organized positions (OOP) — two boxes
+const pvoOrg=[
+  [7,35],[7,49],[7,63],[7,77],     // box 1: Persona
+  [55,35],[55,49],[55,63],[55,77]  // box 2: Coche
+];
+let pvoState=0;
+function pvoBuild(){
+  const stage=$('pvo-stage');
+  stage.querySelectorAll('.pvo-chip,.pvo-box,.pvo-box-label').forEach(e=>e.remove());
+  ['Persona','Coche'].forEach((name,i)=>{
+    const box=document.createElement('div');box.className='pvo-box';box.id='pvo-box'+i;
+    box.style.left=(i===0?4:52)+'%';box.style.top='27%';box.style.width='43%';box.style.height='66%';
+    stage.appendChild(box);
+    const lbl=document.createElement('div');lbl.className='pvo-box-label';lbl.id='pvo-lbl'+i;
+    lbl.textContent='class '+name;lbl.style.left=(i===0?6:54)+'%';lbl.style.top='20%';
+    stage.appendChild(lbl);
+  });
+  pvoChips.forEach((ch,i)=>{
+    const el=document.createElement('div');el.className='pvo-chip '+ch.type;el.textContent=ch.t;el.id='pvo-chip'+i;
+    el.style.left=pvoScatter[i][0]+'%';el.style.top=pvoScatter[i][1]+'%';
+    el.style.transform='rotate('+pvoRot[i]+'deg)';
+    stage.appendChild(el);
+  });
+}
+function pvoToggle(){
+  pvoState=pvoState?0:1;
+  const btn=$('pvo-toggle');const mode=$('pvo-mode');
+  if(pvoState){
+    mode.textContent='Modo: Orientado a Objetos — el orden';mode.style.color='var(--olive)';
+    btn.textContent='◀ Volver al caos';btn.classList.add('on');btn.classList.add('btn-olive');
+    let idx=[0,0];
+    pvoChips.forEach((ch,i)=>{
+      const slot=ch.grp*4+idx[ch.grp];idx[ch.grp]++;
+      const el=$('pvo-chip'+i);
+      el.style.left=pvoOrg[slot][0]+'%';el.style.top=pvoOrg[slot][1]+'%';
+      el.style.transform='rotate(0deg)';
+    });
+    $('pvo-box0').style.opacity='1';$('pvo-box1').style.opacity='1';
+    $('pvo-lbl0').style.opacity='1';$('pvo-lbl1').style.opacity='1';
+  }else{
+    mode.textContent='Modo: Procedimental — el caos';mode.style.color='var(--blood)';
+    btn.textContent='▶ Organizar en objetos';btn.classList.remove('on');btn.classList.remove('btn-olive');
+    pvoChips.forEach((ch,i)=>{const el=$('pvo-chip'+i);el.style.left=pvoScatter[i][0]+'%';el.style.top=pvoScatter[i][1]+'%';el.style.transform='rotate('+pvoRot[i]+'deg)';});
+    $('pvo-box0').style.opacity='0';$('pvo-box1').style.opacity='0';
+    $('pvo-lbl0').style.opacity='0';$('pvo-lbl1').style.opacity='0';
+  }
+}
+pvoBuild();
+$('pvo-toggle').addEventListener('click',pvoToggle);
+
+// ─── W2: Abstracción ───────────────────────────────────────────
+const absAll=['marca','modelo','color','año','placas','precio_día','disponible','kilometraje','último_servicio','n°_tornillos','olor_interior','dueño_anterior'];
+const absCtx={
+  renta:{keep:['marca','modelo','color','precio_día','disponible'],lines:[['marca','"Honda"'],['modelo','"Civic"'],['precio_día','800'],['disponible','True']],label:'# para rentar'},
+  taller:{keep:['marca','modelo','año','kilometraje','último_servicio'],lines:[['marca','"Honda"'],['modelo','"Civic"'],['kilometraje','45000'],['último_servicio','"2026-03"']],label:'# para reparar'}
+};
+function absRender(ctx){
+  const c=absCtx[ctx];
+  // attrs
+  $('abs-attrs').innerHTML=absAll.map(a=>{
+    const cls=c.keep.includes(a)?'keep':'drop';
+    return '<div class="abs-attr '+cls+'">'+a+'</div>';
+  }).join('');
+  // class lines
+  $('abs-ctx-label').textContent=c.label;
+  $('abs-lines').innerHTML=c.lines.map(([k,v])=>
+    '<div class="abs-line"><span class="at">self.'+k+'</span> = '+v+'</div>'
+  ).join('');
+  // stagger reveal
+  const lines=$('abs-lines').querySelectorAll('.abs-line');
+  lines.forEach((l,i)=>setTimeout(()=>l.classList.add('show'),120+i*120));
+}
+$('abs-renta').addEventListener('click',()=>{$('abs-renta').classList.add('on');$('abs-taller').classList.remove('on');absRender('renta');});
+$('abs-taller').addEventListener('click',()=>{$('abs-taller').classList.add('on');$('abs-renta').classList.remove('on');absRender('taller');});
+absRender('renta');
+
+// ─── W3: Clase → Objetos ───────────────────────────────────────
+const facNames=['Ana','Luis','María','Carlos','Sofía','Diego','Elena','Pablo','Lucía','Mateo'];
+const facCities=['CDMX','Atizapán','Puebla','Toluca','Querétaro','León'];
+let facCount=0;
+function facMake(){
+  if(facCount===0)$('fac-objects').innerHTML='';
+  const name=facNames[facCount%facNames.length];
+  const edad=18+Math.floor(Math.random()*30);
+  const city=facCities[Math.floor(Math.random()*facCities.length)];
+  const el=document.createElement('div');el.className='fac-obj';
+  el.innerHTML='<div class="fac-obj-id">objeto #'+(facCount+1)+'</div>'+
+    '<div class="fac-obj-row">nombre: <span>"'+name+'"</span></div>'+
+    '<div class="fac-obj-row">edad: <span>'+edad+'</span></div>'+
+    '<div class="fac-obj-row">ciudad: <span>"'+city+'"</span></div>';
+  $('fac-objects').appendChild(el);
+  facCount++;
+}
+function facClear(){facCount=0;$('fac-objects').innerHTML='<div class="fac-empty">Ningún objeto todavía.<br>El molde está listo — úsalo.</div>';}
+$('fac-make').addEventListener('click',facMake);
+$('fac-clear').addEventListener('click',facClear);
+
+// ─── W4: Anatomía ──────────────────────────────────────────────
+let anaEdad=27,anaEnergia=100;
+function anaBump(el){el.classList.remove('bump');void el.offsetWidth;el.classList.add('bump');}
+function anaLight(which){
+  $('ana-attrs').classList.toggle('lit',which==='attrs');
+  $('ana-methods').classList.toggle('lit',which==='methods');
+}
+$('m-cumple').addEventListener('click',()=>{anaEdad++;$('ana-edad').textContent=anaEdad;anaBump($('ana-edad'));$('ana-msg').innerHTML='<em>cumplir_años()</em> cambió el atributo <strong>edad</strong> → '+anaEdad;});
+$('m-corre').addEventListener('click',()=>{anaEnergia=Math.max(0,anaEnergia-20);$('ana-energia').textContent=anaEnergia;anaBump($('ana-energia'));$('ana-msg').innerHTML='<em>correr()</em> bajó la <strong>energía</strong> → '+anaEnergia;});
+$('m-duerme').addEventListener('click',()=>{anaEnergia=100;$('ana-energia').textContent=anaEnergia;anaBump($('ana-energia'));$('ana-msg').innerHTML='<em>dormir()</em> restauró la <strong>energía</strong> → 100';});
+function styleAnaMsg(){const m=$('ana-msg');m.querySelectorAll('em').forEach(e=>{e.style.color='var(--blood)';e.style.fontStyle='italic';});}
+
+// ─── W5: Mensajes ──────────────────────────────────────────────
+let balA=1000,balB=500;
+function fmt(n){return '$'+n.toLocaleString('en-US');}
+function msgSend(){
+  if(balA<300){msgReset();return;}
+  const packet=$('msg-packet');
+  $('msg-a').classList.add('pulse');
+  // animate packet
+  packet.style.transition='none';packet.style.left='25%';packet.style.opacity='0';
+  void packet.offsetWidth;
+  packet.style.transition='all 1.1s cubic-bezier(.4,0,.2,1)';
+  packet.style.opacity='1';packet.style.left='50%';
+  setTimeout(()=>{packet.style.left='75%';},50);
+  setTimeout(()=>{
+    packet.style.opacity='0';
+    $('msg-a').classList.remove('pulse');$('msg-b').classList.add('pulse');
+    balA-=300;balB+=300;
+    const ba=$('bal-a'),bb=$('bal-b');
+    ba.textContent=fmt(balA);bb.textContent=fmt(balB);
+    ba.classList.add('down');bb.classList.add('up');
+    setTimeout(()=>{ba.classList.remove('down');bb.classList.remove('up');$('msg-b').classList.remove('pulse');},700);
+  },1150);
+}
+function msgReset(){balA=1000;balB=500;$('bal-a').textContent=fmt(balA);$('bal-b').textContent=fmt(balB);}
+$('msg-send').addEventListener('click',msgSend);
+$('msg-reset').addEventListener('click',msgReset);
+
+styleAnaMsg();
+</script>
+</body>
+</html>
