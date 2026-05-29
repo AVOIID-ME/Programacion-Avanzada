@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sesión IV — Más allá de una clase — Programación Avanzada</title>
+<title>Sesión III — Tu primera clase — Programación Avanzada</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -41,7 +41,6 @@ section{position:relative;padding:5rem 2rem;}
 .lead{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:500;line-height:1.25;letter-spacing:-.01em;color:var(--ink);}
 .lead em{font-style:italic;color:var(--blood);}
 .subtle{font-size:1.05rem;color:var(--ink-soft);margin-top:1rem;max-width:640px;}
-.subtle code{font-family:'JetBrains Mono',monospace;background:var(--paper-deep);padding:.1rem .4rem;border:1px solid var(--line);color:var(--blood);font-size:.88rem;}
 
 .widget{background:var(--paper-deep);border:1px solid var(--line);border-left:3px solid var(--blood);padding:2.2rem;margin-top:2.5rem;position:relative;}
 .widget::before{content:attr(data-tag);position:absolute;top:-.7rem;left:1.8rem;background:var(--paper);padding:0 .9rem;font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.25em;text-transform:uppercase;color:var(--blood);}
@@ -51,128 +50,103 @@ section{position:relative;padding:5rem 2rem;}
 .btn{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;padding:.6rem 1rem;background:var(--paper);border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;transition:all .2s;text-transform:uppercase;}
 .btn:hover{border-color:var(--blood);color:var(--blood);}
 .btn.on{background:var(--blood);color:var(--paper);border-color:var(--blood);}
+.btn-olive.on{background:var(--olive);border-color:var(--olive);}
 
-/* ─── W1: Castillo de encapsulamiento ───────────── */
-.cas-stage{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start;}
-.cas-castle{background:var(--paper);border:1px solid var(--line);padding:2rem;text-align:center;}
-.cas-ring{padding:1.3rem;margin:0 auto;position:relative;transition:all .3s;}
-.cas-public{background:rgba(93,102,56,.06);border:2px solid var(--olive);}
-.cas-protected{background:rgba(181,133,42,.08);border:2px solid var(--ochre);margin-top:.8rem;}
-.cas-private{background:rgba(160,36,24,.08);border:2px solid var(--blood);margin-top:.8rem;}
-.cas-ring-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.7rem;font-weight:700;}
-.cas-public > .cas-ring-label{color:var(--olive);}
-.cas-protected > .cas-ring-label{color:var(--ochre);}
-.cas-private > .cas-ring-label{color:var(--blood);}
-.cas-attr{font-family:'JetBrains Mono',monospace;font-size:.82rem;display:inline-block;padding:.4rem .8rem;background:var(--paper);border:1px solid var(--line);margin:.3rem;transition:all .3s;}
-.cas-attr.lit{transform:scale(1.15);box-shadow:0 0 0 3px rgba(160,36,24,.15);}
-.cas-public > .cas-attr{color:var(--olive);border-color:var(--olive);}
-.cas-protected > .cas-attr{color:var(--ochre);border-color:var(--ochre);}
-.cas-private > .cas-attr{color:var(--blood);border-color:var(--blood);}
-.cas-side{display:flex;flex-direction:column;gap:1rem;}
-.cas-tries{display:flex;flex-direction:column;gap:.5rem;}
-.cas-try{font-family:'JetBrains Mono',monospace;font-size:.78rem;padding:.7rem 1rem;background:var(--paper);border:1px solid var(--line);cursor:pointer;text-align:left;transition:all .2s;color:var(--ink);}
-.cas-try:hover{border-color:var(--blood);}
-.cas-result{background:var(--ink);padding:1.3rem 1.5rem;font-family:'JetBrains Mono',monospace;font-size:.85rem;min-height:120px;}
-.cas-result-cmd{color:var(--paper);margin-bottom:.6rem;}
-.cas-result-cmd .prompt{color:#8EAF8B;}
-.cas-result-out{font-size:.8rem;}
-.cas-result-out.ok{color:#A8C580;}
-.cas-result-out.warn{color:#D4956A;}
-.cas-result-out.err{color:#D46A6A;}
-.cas-explain{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(239,230,210,.7);margin-top:.7rem;font-size:.95rem;}
-.cas-explain strong{color:var(--ochre);font-style:normal;font-weight:600;}
+/* Generic code block (light parchment) */
+.codeblock{background:var(--paper);border:1px solid var(--line);padding:1.4rem 1.6rem;font-family:'JetBrains Mono',monospace;font-size:.84rem;line-height:1.8;overflow-x:auto;}
+.cl{white-space:pre;}
+.kw{color:var(--blood);font-style:italic;}
+.cls{color:var(--ink);font-weight:700;}
+.str{color:var(--ochre);}
+.self{color:var(--olive);font-weight:700;}
+.fn{color:var(--ink);font-weight:600;}
+.cm{color:rgba(42,29,20,.4);font-style:italic;}
+.nm{color:var(--ink-soft);}
 
-/* ─── W2: Constructor por defecto ─────────────── */
-.cd-stage{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;align-items:start;}
-.cd-code{background:var(--ink);padding:1.4rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.9;min-height:200px;}
-.cd-code .ln{color:var(--paper);white-space:pre;display:block;}
-.cd-code .kw{color:#D4956A;font-style:italic;}
-.cd-code .self{color:#8EAF8B;font-weight:700;}
-.cd-code .cm{color:rgba(239,230,210,.4);font-style:italic;}
-.cd-code .ghost{opacity:.32;transition:opacity .5s;}
-.cd-code .ghost.lit{opacity:.95;}
-.cd-result{background:var(--paper);border:1px solid var(--line);padding:1.4rem;min-height:200px;}
-.cd-result-tag{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:.7rem;}
-.cd-call{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--ink);margin-bottom:.8rem;}
-.cd-obj{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--ink);background:var(--paper-deep);padding:.8rem;border:1px solid var(--line);}
-.cd-obj-row{padding:.15rem 0;}
-.cd-obj-row span{color:var(--blood);font-weight:700;}
-.cd-msg{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--ink-soft);text-align:center;padding-top:.8rem;font-size:1.05rem;}
-.cd-msg em{color:var(--blood);}
+/* ─── W1: Anatomía interactiva ──────────────────── */
+.anat-wrap{display:grid;grid-template-columns:1.3fr 1fr;gap:1.5rem;align-items:start;}
+.anat-code{background:var(--paper);border:1px solid var(--line);padding:1.5rem;font-family:'JetBrains Mono',monospace;font-size:.84rem;line-height:2;}
+.anat-line{white-space:pre;}
+.t{cursor:pointer;border-radius:2px;padding:.05rem .15rem;transition:all .2s;border-bottom:1.5px dashed transparent;}
+.t:hover{border-bottom-color:currentColor;background:rgba(160,36,24,.06);}
+.t.active{background:var(--blood);color:var(--paper)!important;}
+.t.kw{color:var(--blood);font-style:italic;}
+.t.cls{color:var(--ink);font-weight:700;}
+.t.init{color:var(--ochre);font-weight:600;}
+.t.self{color:var(--olive);font-weight:700;}
+.t.attr{color:var(--ink-soft);}
+.t.method{color:var(--ink);font-weight:600;}
+.t.str{color:var(--ochre);}
+.anat-panel{background:var(--ink);padding:1.5rem;min-height:220px;position:sticky;top:5rem;}
+.anat-panel-tag{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ochre);margin-bottom:.8rem;}
+.anat-panel-title{font-family:'JetBrains Mono',monospace;font-size:1.3rem;color:var(--paper);margin-bottom:.9rem;}
+.anat-panel-text{font-family:'Cormorant Garamond',serif;font-size:1.15rem;line-height:1.5;color:rgba(239,230,210,.8);font-style:italic;}
+.anat-panel-text strong{color:var(--ochre);font-style:normal;font-weight:600;}
 
-/* ─── W3: Módulos y paquetes ────────────────────── */
-.mod-stage{display:grid;grid-template-columns:240px 1fr;gap:1.3rem;align-items:start;}
-.mod-tree{background:var(--paper);border:1px solid var(--line);padding:1.2rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.95;}
-.mod-folder{color:var(--ochre);font-weight:700;white-space:pre;display:block;}
-.mod-file{color:var(--ink-soft);cursor:pointer;padding:0 .3rem;border-radius:2px;transition:all .2s;display:block;white-space:pre;}
-.mod-file:hover{background:rgba(160,36,24,.06);color:var(--ink);}
-.mod-file.sel{background:var(--blood);color:var(--paper);}
-.mod-file.imported{background:rgba(93,102,56,.18);color:var(--olive);}
-.mod-file.imported::after{content:' ←';color:var(--olive);}
-.mod-content{background:var(--ink);padding:1.4rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.9;min-height:240px;}
-.mod-content-head{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.15em;color:var(--ochre);margin-bottom:.8rem;padding-bottom:.6rem;border-bottom:1px solid rgba(239,230,210,.15);}
-.mod-content .ln{color:var(--paper);white-space:pre;display:block;}
-.mod-content .kw{color:#D4956A;font-style:italic;}
-.mod-content .self{color:#8EAF8B;font-weight:700;}
-.mod-content .str{color:#C9A961;}
-.mod-content .cm{color:rgba(239,230,210,.42);font-style:italic;}
-.mod-content .imp{color:#A8C580;font-style:italic;}
-.mod-hint{font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(239,230,210,.65);font-size:.95rem;padding-top:1rem;border-top:1px solid rgba(239,230,210,.12);margin-top:1rem;}
-.mod-hint strong{color:var(--ochre);font-style:normal;}
+/* ─── W2: self ──────────────────────────────────── */
+.self-stage{display:grid;grid-template-columns:1fr;gap:1.3rem;}
+.self-objs{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.self-obj{background:var(--paper);border:2px solid var(--line);border-radius:6px;padding:1rem 1.4rem;cursor:pointer;transition:all .25s;text-align:center;min-width:130px;}
+.self-obj:hover{border-color:var(--olive);}
+.self-obj.sel{border-color:var(--olive);background:rgba(93,102,56,.08);box-shadow:0 0 0 3px rgba(93,102,56,.12);}
+.self-obj-name{font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--olive);font-weight:700;margin-bottom:.3rem;}
+.self-obj-attr{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--ink-soft);}
+.self-flow{background:var(--paper);border:1px solid var(--line);padding:1.5rem;text-align:center;font-family:'JetBrains Mono',monospace;}
+.self-call{font-size:1rem;color:var(--ink);margin-bottom:1rem;}
+.self-call .obj{color:var(--olive);font-weight:700;}
+.self-arrow{font-size:1.5rem;color:var(--blood);margin:.5rem 0;opacity:0;transition:opacity .4s;}
+.self-arrow.show{opacity:1;}
+.self-translate{font-size:.9rem;color:var(--ink-soft);opacity:0;transition:opacity .4s;}
+.self-translate.show{opacity:1;}
+.self-translate .obj{color:var(--olive);font-weight:700;}
+.self-translate .selfk{color:var(--blood);font-weight:700;}
+.self-out{margin-top:1.2rem;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;color:var(--ink);min-height:1.6rem;}
+.self-out em{color:var(--blood);}
 
-/* ─── W4: __main__ gate ─────────────────────────── */
-.gt-stage{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;align-items:stretch;}
-.gt-scenario{background:var(--paper);border:1px solid var(--line);padding:1.5rem;text-align:center;transition:all .3s;}
-.gt-scenario.active{border-color:var(--blood);box-shadow:0 0 0 3px rgba(160,36,24,.08);}
-.gt-cmd{font-family:'JetBrains Mono',monospace;font-size:.75rem;background:var(--ink);color:var(--paper);padding:.7rem 1rem;margin-bottom:1rem;}
-.gt-cmd .prompt{color:#8EAF8B;}
-.gt-cmd .arrow{color:rgba(239,230,210,.55);}
-.gt-name{font-family:'JetBrains Mono',monospace;font-size:1.05rem;color:var(--ink);margin:.5rem 0;}
-.gt-name .val{color:var(--blood);font-weight:700;}
-.gt-gate{width:110px;height:110px;border-radius:50%;border:3px solid var(--line);margin:1rem auto;display:flex;align-items:center;justify-content:center;font-size:2.5rem;transition:all .4s;background:var(--paper-deep);}
-.gt-gate.open{border-color:var(--olive);background:rgba(93,102,56,.1);color:var(--olive);}
-.gt-gate.closed{border-color:var(--blood);background:rgba(160,36,24,.08);color:var(--blood);}
-.gt-status{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;min-height:1.7rem;}
-.gt-status.ok{color:var(--olive);}
-.gt-status.no{color:var(--blood);}
-.gt-code{background:var(--ink);padding:1.2rem;margin-top:1.5rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;line-height:1.9;}
-.gt-code .ln{color:var(--paper);white-space:pre;display:block;border-radius:2px;padding:0 .3rem;transition:all .4s;}
-.gt-code .ln.runs{background:rgba(93,102,56,.28);}
-.gt-code .ln.skips{opacity:.32;}
-.gt-code .kw{color:#D4956A;font-style:italic;}
-.gt-code .str{color:#C9A961;}
-.gt-code .self{color:#8EAF8B;}
-.gt-code .cm{color:rgba(239,230,210,.5);font-style:italic;}
+/* ─── W3: Instanciación ─────────────────────────── */
+.inst-stage{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:center;}
+.inst-left{font-family:'JetBrains Mono',monospace;}
+.inst-call{font-size:1rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);padding:1rem 1.2rem;margin-bottom:1rem;}
+.inst-call .arg{display:inline-block;padding:.1rem .3rem;border-radius:2px;transition:all .8s;}
+.inst-call .arg.a1{color:var(--ochre);background:rgba(181,133,42,.12);}
+.inst-call .arg.a2{color:var(--blood);background:rgba(160,36,24,.1);}
+.inst-ctor{background:var(--ink);padding:1.2rem;font-size:.78rem;line-height:1.9;}
+.inst-ctor .ln{color:var(--paper);white-space:pre;}
+.inst-ctor .kw{color:#D4956A;font-style:italic;}
+.inst-ctor .self{color:#8EAF8B;font-weight:700;}
+.inst-ctor .slot{display:inline-block;min-width:46px;text-align:center;border-bottom:1.5px dashed var(--ochre);color:var(--ochre);transition:all .4s;}
+.inst-ctor .slot.filled{border-bottom-style:solid;}
+.inst-obj{background:var(--paper);border:2px solid var(--olive);border-top:3px solid var(--olive);padding:1.3rem;opacity:.35;transition:opacity .5s;}
+.inst-obj.born{opacity:1;animation:objBorn .5s cubic-bezier(.16,1,.3,1);}
+@keyframes objBorn{0%{transform:scale(.85);}100%{transform:scale(1);}}
+.inst-obj-tag{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.15em;color:var(--olive);margin-bottom:.7rem;text-transform:uppercase;}
+.inst-obj-row{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--ink);padding:.2rem 0;}
+.inst-obj-row span{color:var(--blood);font-weight:700;}
 
-/* ─── W5: Dunders default ─────────────────────── */
-.dun-stage{display:grid;grid-template-columns:1.1fr 1fr;gap:1.5rem;align-items:stretch;}
-.dun-left{display:flex;flex-direction:column;gap:1.3rem;}
-.dun-group-tag{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:.6rem;}
-.dun-group-tag em{color:var(--blood);font-style:italic;letter-spacing:.05em;}
-.dun-chips{display:flex;flex-wrap:wrap;gap:.4rem;}
-.dun-chip{font-family:'JetBrains Mono',monospace;font-size:.74rem;padding:.45rem .75rem;background:var(--paper);border:1px solid var(--line);color:var(--ink-soft);cursor:pointer;transition:all .2s;}
-.dun-chip:hover{border-color:var(--blood);color:var(--blood);}
-.dun-chip.on{background:var(--blood);color:var(--paper);border-color:var(--blood);}
-.dun-panel{background:var(--ink);padding:1.5rem;display:flex;flex-direction:column;gap:.9rem;min-height:280px;}
-.dun-cmd{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--paper);}
-.dun-cmd::before{content:'>>> ';color:#8EAF8B;}
-.dun-res{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#C9A961;white-space:pre-wrap;padding:.55rem .85rem;background:rgba(239,230,210,.06);border-left:2px solid var(--ochre);line-height:1.6;}
-.dun-explain{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;line-height:1.55;color:rgba(239,230,210,.85);margin-top:auto;}
-.dun-explain strong{color:#C9A961;font-style:normal;font-weight:600;}
-.dun-explain code{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-style:normal;color:#D4956A;background:rgba(239,230,210,.08);padding:.1rem .3rem;border-radius:2px;}
-.dun-more{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--ink-soft);margin-top:1.5rem;padding:.9rem 1.2rem;background:var(--paper);border-left:2px solid var(--ochre);}
-.dun-more code{font-family:'JetBrains Mono',monospace;font-style:normal;font-size:.82rem;background:var(--paper-deep);padding:.1rem .35rem;border:1px solid var(--line);color:var(--blood);}
+/* ─── W4: Python vs Java ────────────────────────── */
+.pj-stage{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+.pj-col{background:var(--paper);border:1px solid var(--line);overflow:hidden;}
+.pj-head{background:var(--ink);color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:.75rem;padding:.7rem 1.2rem;letter-spacing:.1em;display:flex;justify-content:space-between;align-items:center;}
+.pj-head .badge{font-size:.6rem;color:var(--ochre);}
+.pj-body{padding:1.2rem;font-family:'JetBrains Mono',monospace;font-size:.76rem;line-height:1.9;overflow-x:auto;}
+.pj-line{white-space:pre;display:block;padding:0 .3rem;border-radius:2px;transition:background .3s;}
+.pj-line.lit{background:rgba(160,36,24,.12);}
+.pj-line .kw{color:var(--blood);font-style:italic;}
+.pj-line .cls{color:var(--ink);font-weight:700;}
+.pj-line .str{color:var(--ochre);}
+.pj-line .self{color:var(--olive);font-weight:700;}
+.pj-line .ty{color:var(--ink-soft);}
 
-/* ─── Sprint 0 closing ───────────────────────────── */
-.s0{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--olive);padding:2rem;margin-top:2rem;}
-.s0-tag{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--olive);margin-bottom:1rem;}
-.s0-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.4rem;}
-.s0-card{background:var(--paper-deep);border:1px solid var(--line);padding:1.3rem;text-align:center;}
-.s0-num{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2.2rem;color:var(--blood);line-height:1;margin-bottom:.5rem;}
-.s0-q{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--ink);margin-bottom:.4rem;line-height:1.25;}
-.s0-h{font-size:.86rem;color:var(--ink-soft);font-style:italic;}
+/* ─── Taller ───────────────────────────────────── */
+.taller{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--olive);padding:2rem;margin-top:2rem;}
+.taller-tag{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--olive);margin-bottom:1rem;}
+.taller-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.3rem;}
+.taller-step{background:var(--paper-deep);border:1px solid var(--line);padding:1.2rem;}
+.taller-step-n{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.8rem;color:var(--blood);line-height:1;margin-bottom:.5rem;}
+.taller-step-t{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--ink);margin-bottom:.3rem;}
+.taller-step-d{font-size:.92rem;color:var(--ink-soft);}
 
-/* Tarea */
+/* Cierre */
 .cierre{background:var(--paper-deep);}
 .tarea{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--ochre);padding:2rem;margin-top:2rem;}
 .tarea-tag{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ochre);margin-bottom:1rem;}
@@ -187,243 +161,331 @@ footer{padding:3rem 2rem;border-top:1px solid var(--line);text-align:center;}
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
 .reveal.visible{opacity:1;transform:translateY(0);}
 
+/* ─── W5: Getters/Setters ──────────────────────── */
+.gs-stage{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:stretch;}
+.gs-code{background:var(--ink);padding:1.4rem;font-family:'JetBrains Mono',monospace;font-size:.76rem;line-height:1.95;}
+.gs-code .ln{color:var(--paper);white-space:pre;display:block;border-radius:2px;transition:background .3s;padding:0 .25rem;}
+.gs-code .ln.flash-ok{background:rgba(93,102,56,.4);}
+.gs-code .ln.flash-no{background:rgba(160,36,24,.35);}
+.gs-code .kw{color:#D4956A;font-style:italic;}
+.gs-code .self{color:#8EAF8B;font-weight:700;}
+.gs-code .cm{color:rgba(239,230,210,.42);font-style:italic;}
+.gs-code .str{color:#C9A961;}
+.gs-demo{background:var(--paper);border:1px solid var(--line);padding:1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.gs-val-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:.3rem;}
+.gs-val{font-family:'Cormorant Garamond',serif;font-size:3.6rem;color:var(--ink);line-height:1;transition:all .4s;}
+.gs-val.ok{color:var(--olive);}
+.gs-val.no{animation:shake .4s;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-7px);}75%{transform:translateX(7px);}}
+.gs-gate{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--ink-soft);margin:1rem 0 .4rem;padding:.45rem 1rem;border:1px dashed var(--line);border-radius:20px;}
+.gs-feedback{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;min-height:1.6rem;margin-top:.6rem;}
+.gs-feedback.ok{color:var(--olive);}
+.gs-feedback.no{color:var(--blood);}
+.gs-tries{display:flex;gap:.5rem;margin-top:1.2rem;flex-wrap:wrap;justify-content:center;}
+
+/* ─── W6: __str__ ──────────────────────────────── */
+.str-stage{display:grid;grid-template-columns:1fr;gap:1.2rem;}
+.str-term{background:var(--ink);padding:1.3rem 1.5rem;font-family:'JetBrains Mono',monospace;font-size:.85rem;}
+.str-term .prompt{color:#8EAF8B;}
+.str-term .cmd{color:var(--paper);}
+.str-out{margin-top:.6rem;font-size:.82rem;transition:all .4s;}
+.str-out.ugly{color:rgba(239,230,210,.45);}
+.str-out.pretty{color:#C9A961;font-weight:500;}
+.str-method{background:var(--paper);border:1px solid var(--line);padding:1.2rem 1.4rem;font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:1.9;transition:all .4s;}
+.str-method.off{opacity:.3;}
+.str-method .ln{white-space:pre;display:block;}
+.str-method .kw{color:var(--blood);font-style:italic;}
+.str-method .self{color:var(--olive);font-weight:700;}
+.str-method .str{color:var(--ochre);}
+
+/* ─── W6b: __eq__ / __hash__ ───────────────────── */
+.eq-objs{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.3rem;}
+.eq-obj{font-family:'JetBrains Mono',monospace;font-size:.8rem;background:var(--paper);border:1px solid var(--line);padding:.7rem 1rem;color:var(--ink);}
+.eq-result{display:flex;gap:1rem;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:1.1rem;margin-bottom:1rem;}
+.eq-expr{color:var(--ink);}
+.eq-arrow{color:var(--blood);}
+.eq-bool{font-weight:700;font-size:1.4rem;transition:all .3s;}
+.eq-bool.no{color:var(--blood);}
+.eq-bool.yes{color:var(--olive);}
+.eq-explain{text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--ink-soft);min-height:2.5rem;}
+.eq-explain strong{color:var(--blood);font-style:normal;font-weight:600;}
+
 @media(max-width:860px){
   section{padding:3.5rem 1.2rem;}
-  .cas-stage,.cd-stage,.mod-stage,.gt-stage,.dun-stage{grid-template-columns:1fr;}
-  .s0-grid{grid-template-columns:1fr 1fr;}
-}
-@media(max-width:540px){
-  .s0-grid{grid-template-columns:1fr;}
+  .anat-wrap,.inst-stage,.pj-stage,.gs-stage{grid-template-columns:1fr;}
+  .anat-panel{position:relative;top:0;}
+  .taller-steps{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
 <div class="progress" id="prog"></div>
 <nav class="course-nav">
-  <a href="sesion-03.html" class="back">Sesión 03</a>
-  <span class="session-label">Sesión 04 · 29.05.2026</span>
+  <a href="sesion-02.html" class="back">Sesión 02</a>
+  <span class="session-label">Sesión 03 · 27.05.2026</span>
   <a href="../index.html" class="next">Curso</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-float" style="top:14%;left:8%;--r:-4deg">from modelos import Estudiante</div>
-  <div class="hero-float" style="top:28%;right:9%;--r:3deg;animation-delay:-3s">if __name__ == "__main__":</div>
-  <div class="hero-float" style="bottom:32%;left:13%;--r:2deg;animation-delay:-6s">private __password</div>
-  <div class="hero-float" style="bottom:18%;right:14%;--r:-3deg;animation-delay:-9s">package com.unitec;</div>
-  <div class="hero-float" style="top:50%;left:42%;--r:1deg;animation-delay:-4.5s">def __init__(self): pass</div>
+  <div class="hero-float" style="top:16%;left:9%;--r:-4deg">class Estudiante:</div>
+  <div class="hero-float" style="top:28%;right:11%;--r:3deg;animation-delay:-3s">def __init__(self):</div>
+  <div class="hero-float" style="bottom:30%;left:13%;--r:2deg;animation-delay:-6s">self.nombre = nombre</div>
+  <div class="hero-float" style="bottom:18%;right:15%;--r:-3deg;animation-delay:-9s">ana = Estudiante("Ana", 20)</div>
+  <div class="hero-float" style="top:50%;left:44%;--r:1deg;animation-delay:-4.5s">return self.saludar()</div>
   <div class="hero-inner">
-    <div class="hero-label">Sesión IV · Encapsulamiento, Paquetes, Main · Ref. Temario 1.3 – 1.6</div>
-    <h1>Más allá<br>de <em>una</em> clase.</h1>
-    <p class="hero-sub">Encapsular bien. Organizar el código. Dar el punto de partida del programa.</p>
+    <div class="hero-label">Sesión III · Declaraciones · Ref. Temario 1.2.1 – 1.2.5</div>
+    <h1>Tu primera<br><em>clase.</em></h1>
+    <p class="hero-sub">Ayer dibujamos objetos en la mente. Hoy los escribimos en código — en Python <em>y</em> en Java.</p>
   </div>
 </section>
 
 <!-- INTRO -->
 <section>
   <div class="wrap-n">
-    <p class="marker">I · El proyecto crece</p>
-    <p class="lead">Una clase sola es un experimento.<br>Un proyecto son <em>muchas</em>, en su lugar.</p>
-    <p class="subtle">Hoy salimos del archivo único. Aprendemos a <em>esconder lo que importa</em>, <em>organizar lo que crece</em> y <em>decidir por dónde empieza</em> el programa.</p>
+    <p class="marker">I · Del concepto al código</p>
+    <p class="lead">Una clase no es magia.<br>Es una <em>palabra clave</em>, un constructor, y datos con nombre.</p>
+    <p class="subtle">Vamos a diseccionar una clase real — la <code style="font-family:'JetBrains Mono',monospace;background:var(--paper-deep);padding:.1rem .4rem;border:1px solid var(--line);color:var(--blood);font-size:.85rem">clase Estudiante</code> — pieza por pieza. Toca cada parte para entenderla.</p>
   </div>
 </section>
 
-<!-- W1: Castillo -->
+<!-- W1: Anatomía -->
 <section>
   <div class="wrap">
-    <p class="marker">II · El castillo del encapsulamiento</p>
-    <p class="lead">Tres niveles de acceso.<br>Tres maneras de decir <em>"no toques"</em>.</p>
-    <p class="subtle">En Python, el control es por convención (<code>_</code>, <code>__</code>). En Java se enforza con <code>private</code>, <code>protected</code>, <code>public</code>. Intenta entrar al castillo desde afuera:</p>
-    <div class="widget" data-tag="Intenta acceder">
-      <div class="cas-stage">
-        <div class="cas-castle">
-          <div class="cas-ring cas-public">
-            <div class="cas-ring-label">Pública</div>
-            <div class="cas-ring cas-protected">
-              <div class="cas-ring-label">Protegida</div>
-              <div class="cas-ring cas-private">
-                <div class="cas-ring-label">Privada</div>
-                <div class="cas-attr" id="att-private">__password</div>
-              </div>
-              <div class="cas-attr" id="att-protected">_edad</div>
-            </div>
-            <div class="cas-attr" id="att-public">nombre</div>
-          </div>
+    <p class="marker">II · Anatomía de una clase</p>
+    <p class="lead">Toca cada parte del código.<br>Cada pieza <em>tiene un trabajo.</em></p>
+    <div class="widget" data-tag="Toca el código">
+      <div class="anat-wrap">
+        <div class="anat-code" id="anat-code">
+<div class="anat-line"><span class="t kw" data-e="class">class</span> <span class="t cls" data-e="cls">Estudiante</span>:</div>
+<div class="anat-line">    <span class="t kw" data-e="def">def</span> <span class="t init" data-e="init">__init__</span>(<span class="t self" data-e="self">self</span>, nombre, edad):</div>
+<div class="anat-line">        <span class="t attr" data-e="attr">self.nombre = nombre</span></div>
+<div class="anat-line">        <span class="t attr" data-e="attr">self.edad = edad</span></div>
+<div class="anat-line">        <span class="t attr" data-e="list">self.materias = []</span></div>
+<div class="anat-line"> </div>
+<div class="anat-line">    <span class="t kw" data-e="def">def</span> <span class="t method" data-e="method">saludar</span>(<span class="t self" data-e="self">self</span>):</div>
+<div class="anat-line">        <span class="t kw" data-e="return">return</span> <span class="t str" data-e="fstring">f"Hola, soy {self.nombre}"</span></div>
         </div>
-        <div class="cas-side">
-          <div class="cas-tries">
-            <button class="cas-try" data-acc="public">ana.nombre</button>
-            <button class="cas-try" data-acc="protected">ana._edad</button>
-            <button class="cas-try" data-acc="private">ana.__password</button>
-          </div>
-          <div class="cas-result">
-            <div class="cas-result-cmd"><span class="prompt">&gt;&gt;&gt; </span><span id="cas-cmd">— elige uno —</span></div>
-            <div class="cas-result-out" id="cas-out"></div>
-            <div class="cas-explain" id="cas-exp">Pulsa un acceso y mira qué pasa.</div>
-          </div>
+        <div class="anat-panel">
+          <div class="anat-panel-tag">Selecciona una pieza</div>
+          <div class="anat-panel-title" id="anat-title">👆 Toca el código</div>
+          <div class="anat-panel-text" id="anat-text">Cada color es una idea distinta. Empieza por la palabra <strong>class</strong>.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- W2: Constructor por defecto -->
+<!-- W2: self -->
 <section>
   <div class="wrap">
-    <p class="marker">III · El constructor invisible</p>
-    <p class="lead">Aunque no escribas <em>__init__</em>,<br>Python <em>siempre</em> pone uno.</p>
-    <p class="subtle">Y por defecto, no hace nada. Pulsa para revelar el constructor invisible:</p>
-    <div class="widget" data-tag="Revela lo invisible">
-      <div class="cd-stage">
-        <div class="cd-code" id="cd-code"></div>
-        <div class="cd-result">
-          <div class="cd-result-tag">Al crear el objeto</div>
-          <div class="cd-call" id="cd-call">ana = Estudiante()</div>
-          <div class="cd-obj">
-            <div class="cd-obj-row">objeto: <span>ana</span></div>
-            <div class="cd-obj-row" id="cd-attrs">(sin atributos — el __init__ default no hace nada)</div>
+    <p class="marker">III · El misterio de <em style="font-style:italic">self</em></p>
+    <p class="lead"><em>self</em> es el "yo" del objeto.<br>Es el objeto hablando de sí mismo.</p>
+    <p class="subtle">Cuando escribes <code style="font-family:'JetBrains Mono',monospace;background:var(--paper-deep);padding:.1rem .4rem;border:1px solid var(--line);color:var(--olive);font-size:.85rem">ana.saludar()</code>, Python pasa <em>ana</em> como self automáticamente. Elige un objeto y míralo:</p>
+    <div class="widget" data-tag="Elige un objeto">
+      <div class="self-stage">
+        <div class="self-objs">
+          <div class="self-obj sel" data-name="ana" data-attr="Ana">
+            <div class="self-obj-name">ana</div>
+            <div class="self-obj-attr">nombre = "Ana"</div>
           </div>
-          <div class="cd-msg" id="cd-msg">→ El objeto existe pero está <em>vacío</em>.</div>
+          <div class="self-obj" data-name="luis" data-attr="Luis">
+            <div class="self-obj-name">luis</div>
+            <div class="self-obj-attr">nombre = "Luis"</div>
+          </div>
+          <div class="self-obj" data-name="sofia" data-attr="Sofía">
+            <div class="self-obj-name">sofia</div>
+            <div class="self-obj-attr">nombre = "Sofía"</div>
+          </div>
+        </div>
+        <div class="self-flow">
+          <div class="self-call">Llamas: <span class="obj" id="self-objname">ana</span>.saludar()</div>
+          <div class="self-arrow" id="self-arrow">↓ Python lo traduce a ↓</div>
+          <div class="self-translate" id="self-trans">Estudiante.saludar(<span class="selfk">self</span> = <span class="obj" id="self-transname">ana</span>)</div>
+          <div class="self-out" id="self-out"></div>
         </div>
       </div>
       <div class="w-controls">
-        <button class="btn on" id="cd-toggle">▶ Mostrar el invisible</button>
-        <button class="btn" id="cd-custom">▶ Con __init__ propio</button>
+        <button class="btn on btn-olive" id="self-run">▶ Ejecutar saludar()</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- W3: Módulos y paquetes -->
+<!-- W3: Instanciación -->
 <section>
   <div class="wrap">
-    <p class="marker">IV · Módulos y paquetes</p>
-    <p class="lead">Una clase por archivo.<br>Archivos en carpetas. Carpetas en proyecto.</p>
-    <p class="subtle">Así crece el código en serio. Click en un archivo para ver su contenido. Al elegir <code>main.py</code>, mira cómo se conecta con los demás:</p>
-    <div class="widget" data-tag="Explora el proyecto">
-      <div class="mod-stage">
-        <div class="mod-tree">
-<span class="mod-folder">mi_proyecto/</span><span class="mod-file sel" data-f="main">  main.py</span><span class="mod-folder">  modelos/</span><span class="mod-file" data-f="init1">    __init__.py</span><span class="mod-file" data-f="estudiante">    estudiante.py</span><span class="mod-file" data-f="materia">    materia.py</span><span class="mod-folder">  utilidades/</span><span class="mod-file" data-f="init2">    __init__.py</span><span class="mod-file" data-f="validador">    validador.py</span>
+    <p class="marker">IV · Crear un objeto</p>
+    <p class="lead">Los argumentos <em>viajan</em><br>del paréntesis a los atributos.</p>
+    <p class="subtle">Pulsa "Crear" y observa cómo <em>"Ana"</em> y <em>20</em> entran al constructor y llenan el objeto.</p>
+    <div class="widget" data-tag="Crea el objeto">
+      <div class="inst-stage">
+        <div class="inst-left">
+          <div class="inst-call">ana = Estudiante(<span class="arg a1" id="arg1">"Ana"</span>, <span class="arg a2" id="arg2">20</span>)</div>
+          <div class="inst-ctor">
+            <div class="ln"><span class="kw">def</span> __init__(<span class="self">self</span>, nombre, edad):</div>
+            <div class="ln">    <span class="self">self</span>.nombre = <span class="slot" id="slot1">?</span></div>
+            <div class="ln">    <span class="self">self</span>.edad = <span class="slot" id="slot2">?</span></div>
+          </div>
         </div>
-        <div class="mod-content">
-          <div class="mod-content-head" id="mod-head">📄 main.py</div>
-          <div id="mod-body"></div>
-          <div class="mod-hint" id="mod-hint"></div>
+        <div class="inst-obj" id="inst-obj">
+          <div class="inst-obj-tag">objeto: ana</div>
+          <div class="inst-obj-row">nombre: <span id="obj-nombre">—</span></div>
+          <div class="inst-obj-row">edad: <span id="obj-edad">—</span></div>
+          <div class="inst-obj-row">materias: <span>[]</span></div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- W4: __name__ gate -->
-<section>
-  <div class="wrap">
-    <p class="marker">V · El guardián <em style="font-style:italic">__name__</em></p>
-    <p class="lead">El mismo archivo, dos comportamientos.<br>Depende de <em>cómo</em> lo llames.</p>
-    <p class="subtle">Cuando ejecutas un archivo directo, <code>__name__</code> vale <code>"__main__"</code> y el código corre. Cuando lo importas, vale el nombre del módulo y el código se salta. Cambia el escenario:</p>
-    <div class="widget" data-tag="Cambia el escenario">
-      <div class="gt-stage">
-        <div class="gt-scenario active" id="gt-scn-run">
-          <div class="gt-cmd"><span class="prompt">$ </span>python estudiante.py</div>
-          <div class="gt-name">__name__ = <span class="val">"__main__"</span></div>
-          <div class="gt-gate open">✓</div>
-          <div class="gt-status ok">Puerta abierta — el código corre.</div>
-        </div>
-        <div class="gt-scenario" id="gt-scn-import">
-          <div class="gt-cmd"><span class="prompt">$ </span>python main.py <span class="arrow">→ importa estudiante</span></div>
-          <div class="gt-name">__name__ = <span class="val">"estudiante"</span></div>
-          <div class="gt-gate closed">✗</div>
-          <div class="gt-status no">Puerta cerrada — el código se salta.</div>
-        </div>
-      </div>
-      <div class="gt-code">
-<span class="ln"><span class="kw">class</span> Estudiante:</span>
-<span class="ln">    <span class="kw">def</span> __init__(<span class="self">self</span>, nombre):</span>
-<span class="ln">        <span class="self">self</span>.nombre = nombre</span>
-<span class="ln"> </span>
-<span class="ln"><span class="kw">if</span> __name__ == <span class="str">"__main__"</span>:</span>
-<span class="ln runs" id="gt-l2">    ana = Estudiante(<span class="str">"Ana"</span>)</span>
-<span class="ln runs" id="gt-l3">    print(ana.nombre)  <span class="cm"># solo si se ejecuta directo</span></span>
       </div>
       <div class="w-controls">
-        <button class="btn on" data-gt="run">▶ Ejecutar directo</button>
-        <button class="btn" data-gt="import">↓ Importar</button>
+        <button class="btn on" id="inst-run">▶ Crear objeto</button>
+        <button class="btn" id="inst-reset">⟲ Reiniciar</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- W5: Dunders -->
+<!-- W4: Python vs Java -->
 <section>
   <div class="wrap">
-    <p class="marker">VI · Lo que toda clase tiene <em style="font-style:italic">gratis</em></p>
-    <p class="lead">Acabas de ver <em>__name__</em> a nivel módulo.<br>Cada clase trae <em>el suyo</em> — y muchos más.</p>
-    <p class="subtle">Python te regala una colección de atributos y métodos en toda clase. Algunos pertenecen <em>a la clase</em>, otros <em>a cada instancia</em>. Todos heredados de <code style="font-family:'JetBrains Mono',monospace;background:var(--paper-deep);padding:.1rem .4rem;border:1px solid var(--line);color:var(--blood);font-size:.85rem">object</code>. Toca cada uno y mira qué devuelve:</p>
-    <div class="widget" data-tag="Inspecciona la clase">
-      <div class="dun-stage">
-        <div class="dun-left">
-          <div>
-            <div class="dun-group-tag">a nivel <em>clase</em> · sobre Estudiante</div>
-            <div class="dun-chips">
-              <button class="dun-chip on" data-d="__name__">__name__</button>
-              <button class="dun-chip" data-d="__doc__">__doc__</button>
-              <button class="dun-chip" data-d="__module__">__module__</button>
-              <button class="dun-chip" data-d="__dict__">__dict__</button>
-              <button class="dun-chip" data-d="__bases__">__bases__</button>
-              <button class="dun-chip" data-d="__mro__">__mro__</button>
-            </div>
-          </div>
-          <div>
-            <div class="dun-group-tag">a nivel <em>instancia</em> · sobre ana</div>
-            <div class="dun-chips">
-              <button class="dun-chip" data-d="__class__">__class__</button>
-              <button class="dun-chip" data-d="__init__">__init__</button>
-              <button class="dun-chip" data-d="__str__">__str__</button>
-              <button class="dun-chip" data-d="__repr__">__repr__</button>
-              <button class="dun-chip" data-d="__eq__">__eq__</button>
-              <button class="dun-chip" data-d="__hash__">__hash__</button>
-            </div>
+    <p class="marker">V · La misma clase, dos lenguajes</p>
+    <p class="lead">Python dice poco.<br>Java dice <em>todo, explícito.</em></p>
+    <p class="subtle">Misma idea, distinto carácter. Toca un concepto y mira dónde vive en cada lenguaje:</p>
+    <div class="widget" data-tag="Compara los conceptos">
+      <div class="pj-stage">
+        <div class="pj-col">
+          <div class="pj-head">Python <span class="badge">conciso</span></div>
+          <div class="pj-body" id="py-body">
+<span class="pj-line" data-c="class"><span class="kw">class</span> <span class="cls">Estudiante</span>:</span>
+<span class="pj-line" data-c="ctor">    <span class="kw">def</span> __init__(<span class="self">self</span>, nombre, edad):</span>
+<span class="pj-line" data-c="attr">        <span class="self">self</span>.nombre = nombre</span>
+<span class="pj-line" data-c="attr">        <span class="self">self</span>.edad = edad</span>
+<span class="pj-line"> </span>
+<span class="pj-line" data-c="method">    <span class="kw">def</span> saludar(<span class="self">self</span>):</span>
+<span class="pj-line" data-c="method">        <span class="kw">return</span> <span class="str">f"Hola, soy {self.nombre}"</span></span>
           </div>
         </div>
-        <div class="dun-panel">
-          <div class="dun-cmd" id="dun-cmd"></div>
-          <div class="dun-res" id="dun-res"></div>
-          <div class="dun-explain" id="dun-explain"></div>
+        <div class="pj-col">
+          <div class="pj-head">Java <span class="badge">explícito</span></div>
+          <div class="pj-body" id="java-body">
+<span class="pj-line" data-c="class"><span class="kw">public class</span> <span class="cls">Estudiante</span> {</span>
+<span class="pj-line" data-c="attr">    <span class="ty">private String</span> nombre;</span>
+<span class="pj-line" data-c="attr">    <span class="ty">private int</span> edad;</span>
+<span class="pj-line"> </span>
+<span class="pj-line" data-c="ctor">    <span class="kw">public</span> Estudiante(String nombre, <span class="ty">int</span> edad) {</span>
+<span class="pj-line" data-c="ctor">        <span class="self">this</span>.nombre = nombre;</span>
+<span class="pj-line" data-c="ctor">        <span class="self">this</span>.edad = edad;</span>
+<span class="pj-line" data-c="ctor">    }</span>
+<span class="pj-line"> </span>
+<span class="pj-line" data-c="method">    <span class="kw">public</span> String saludar() {</span>
+<span class="pj-line" data-c="method">        <span class="kw">return</span> <span class="str">"Hola, soy " + this.nombre</span>;</span>
+<span class="pj-line" data-c="method">    }</span>
+<span class="pj-line" data-c="class">}</span>
+          </div>
         </div>
       </div>
-      <div class="dun-more">Hay <em>muchos más</em> — los <code>__add__</code>, <code>__len__</code>, <code>__iter__</code>, <code>__call__</code> y compañía aparecen cuando quieres que tu clase se comporte como número, lista, iterable o función. Los verás cuando los necesites; por ahora basta con saber que existen.</div>
+      <div class="w-controls">
+        <button class="btn on" data-concept="class">Clase</button>
+        <button class="btn" data-concept="ctor">Constructor</button>
+        <button class="btn" data-concept="attr">Atributos</button>
+        <button class="btn" data-concept="method">Método</button>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Sprint 0 -->
+<!-- W5: Getters/Setters -->
 <section>
   <div class="wrap">
-    <p class="marker">VII · Sprint 0 Review · ahora</p>
-    <p class="lead">Llegó el momento.<br>Cuéntanos tu proyecto.</p>
-    <p class="subtle">5 minutos por equipo. Sin slides, sin formalidad — solo claridad. Estas son las 4 preguntas:</p>
-    <div class="s0">
-      <div class="s0-tag">El registro formal del proyecto</div>
-      <div class="s0-grid">
-        <div class="s0-card">
-          <div class="s0-num">1</div>
-          <div class="s0-q">¿Qué problema resuelves?</div>
-          <div class="s0-h">En una frase. Sin tecnicismos.</div>
+    <p class="marker">VI · Getters & Setters</p>
+    <p class="lead">No dejes que nadie meta <em>basura</em><br>en tus atributos. El setter es el guardia.</p>
+    <p class="subtle">Asignar directo no valida nada: <code style="font-family:'JetBrains Mono',monospace;background:var(--paper-deep);padding:.1rem .4rem;border:1px solid var(--line);color:var(--blood);font-size:.85rem">ana.edad = -5</code> pasa sin chistar. Un setter revisa antes de guardar. Prueba a romperlo:</p>
+    <div class="widget" data-tag="Prueba el guardia">
+      <div class="gs-stage">
+        <div class="gs-code">
+<span class="ln"><span class="kw">def</span> set_edad(<span class="self">self</span>, valor):</span>
+<span class="ln" id="gs-l-ok">    <span class="kw">if</span> 0 &lt;= valor &lt;= 120:</span>
+<span class="ln" id="gs-l-okv">        <span class="self">self</span>.edad = valor   <span class="cm"># ✓</span></span>
+<span class="ln"><span class="kw">    else</span>:</span>
+<span class="ln" id="gs-l-no">        <span class="kw">raise</span> ValueError(<span class="str">"Edad inválida"</span>)</span>
         </div>
-        <div class="s0-card">
-          <div class="s0-num">2</div>
-          <div class="s0-q">¿Quién lo usaría?</div>
-          <div class="s0-h">Una persona real, no "los usuarios".</div>
+        <div class="gs-demo">
+          <div class="gs-val-label">self.edad</div>
+          <div class="gs-val" id="gs-val">20</div>
+          <div class="gs-gate">guardia: 0 ≤ valor ≤ 120</div>
+          <div class="gs-feedback" id="gs-fb">Intenta cambiar la edad ↓</div>
+          <div class="gs-tries">
+            <button class="btn" data-v="-5">set_edad(-5)</button>
+            <button class="btn" data-v="25">set_edad(25)</button>
+            <button class="btn" data-v="200">set_edad(200)</button>
+          </div>
         </div>
-        <div class="s0-card">
-          <div class="s0-num">3</div>
-          <div class="s0-q">¿Cuál es tu stack?</div>
-          <div class="s0-h">Python, Java, BD tentativa, etc.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- W6: __str__ y __eq__ -->
+<section>
+  <div class="wrap">
+    <p class="marker">VII · Representación e identidad</p>
+    <p class="lead">Sin <em>__str__</em>, tu objeto se imprime feo.<br>Con él, se imprime <em>humano.</em></p>
+    <p class="subtle">El método <code style="font-family:'JetBrains Mono',monospace;background:var(--paper-deep);padding:.1rem .4rem;border:1px solid var(--line);color:var(--blood);font-size:.85rem">__str__</code> (el <em>toString</em> de Java) decide qué ves al imprimir. Actívalo:</p>
+    <div class="widget" data-tag="Activa __str__">
+      <div class="str-stage">
+        <div class="str-term">
+          <div><span class="prompt">&gt;&gt;&gt; </span><span class="cmd">print(ana)</span></div>
+          <div class="str-out ugly" id="str-out">&lt;__main__.Estudiante object at 0x7f8b2c0a1d30&gt;</div>
         </div>
-        <div class="s0-card">
-          <div class="s0-num">4</div>
-          <div class="s0-q">¿URL del repo?</div>
-          <div class="s0-h">github.com/tu-usuario/...</div>
+        <div class="str-method off" id="str-method">
+<span class="ln"><span class="kw">def</span> __str__(<span class="self">self</span>):</span>
+<span class="ln">    <span class="kw">return</span> <span class="str">f"Estudiante({self.nombre}, {self.edad})"</span></span>
+        </div>
+      </div>
+      <div class="w-controls">
+        <button class="btn on" id="str-toggle">+ Agregar __str__</button>
+      </div>
+    </div>
+
+    <div class="widget" data-tag="Igualdad · __eq__ y __hash__" style="margin-top:1.8rem">
+      <div class="w-prompt">¿Dos objetos con los <em>mismos datos</em> son iguales?</div>
+      <div class="eq-objs">
+        <div class="eq-obj">ana1 = Estudiante("Ana", 20)</div>
+        <div class="eq-obj">ana2 = Estudiante("Ana", 20)</div>
+      </div>
+      <div class="eq-result">
+        <span class="eq-expr">ana1 == ana2</span>
+        <span class="eq-arrow">→</span>
+        <span class="eq-bool no" id="eq-bool">False</span>
+      </div>
+      <div class="eq-explain" id="eq-explain">Sin <strong>__eq__</strong>, Python compara su lugar en memoria. Son objetos distintos aunque tengan los mismos datos.</div>
+      <div class="w-controls">
+        <button class="btn on" id="eq-toggle">+ Definir __eq__ y __hash__</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TALLER -->
+<section>
+  <div class="wrap">
+    <p class="marker">VIII · Taller · en clase</p>
+    <p class="lead">Ahora tú.<br>Escribe la clase <em>Estudiante</em> — en Python y en Java.</p>
+    <div class="taller">
+      <div class="taller-tag">Manos al teclado · 30 min</div>
+      <div class="taller-steps">
+        <div class="taller-step">
+          <div class="taller-step-n">1</div>
+          <div class="taller-step-t">Python</div>
+          <div class="taller-step-d">Define <code style="font-family:'JetBrains Mono',monospace;color:var(--blood)">Estudiante</code> con nombre, edad y un método <code style="font-family:'JetBrains Mono',monospace;color:var(--blood)">saludar()</code>. Crea 2 objetos.</div>
+        </div>
+        <div class="taller-step">
+          <div class="taller-step-n">2</div>
+          <div class="taller-step-t">Java</div>
+          <div class="taller-step-d">Reescribe la misma clase en Java. Nota qué cambia: tipos, <code style="font-family:'JetBrains Mono',monospace;color:var(--blood)">this</code>, <code style="font-family:'JetBrains Mono',monospace;color:var(--blood)">public</code>.</div>
+        </div>
+        <div class="taller-step">
+          <div class="taller-step-n">3</div>
+          <div class="taller-step-t">Push</div>
+          <div class="taller-step-d">Sube ambos archivos a tu repo del proyecto. <strong>Tu primer aporte al integrador.</strong></div>
         </div>
       </div>
     </div>
@@ -433,16 +495,16 @@ footer{padding:3rem 2rem;border-top:1px solid var(--line);text-align:center;}
 <!-- CIERRE -->
 <section class="cierre">
   <div class="wrap-n">
-    <p class="marker">VIII · Para la próxima clase</p>
-    <p class="lead">Hoy tu clase aprendió a vivir <em>en su lugar.</em><br>Ahora hazla parte de un proyecto.</p>
+    <p class="marker">IX · Para el viernes</p>
+    <p class="lead">Si escribiste una clase con <em>self</em> y la entendiste,<br>ya eres programador orientado a objetos.</p>
     <div class="tarea">
       <div class="tarea-tag">Tarea · sube a tu repo</div>
       <ol>
-        <li>Reorganiza tu proyecto en al menos <strong>dos archivos</strong>: <code>modelos/tu_clase.py</code> y <code>main.py</code>.</li>
-        <li>Agrega el <code>if __name__ == "__main__":</code> al final de <code>main.py</code>.</li>
-        <li>Marca al menos un atributo como <strong>privado</strong> (<code>__atributo</code>) y otro <strong>protegido</strong> (<code>_atributo</code>).</li>
-        <li>Asegúrate de que <code>python main.py</code> corra sin errores y muestre algo útil.</li>
-        <li><strong>Commit y push.</strong> Trae el link el lunes.</li>
+        <li>Toma la clase de tu objeto de la Sesión 2 (mochila, celular, mascota).</li>
+        <li>Conviértela en <strong>código real en Python</strong>: <code>class</code>, <code>__init__</code>, atributos con <code>self</code> y al menos 2 métodos.</li>
+        <li>Crea <strong>2 objetos</strong> de tu clase y llama sus métodos.</li>
+        <li>Reescribe la clase en <strong>Java</strong> (aunque batalles — esa lucha enseña).</li>
+        <li><strong>Commit y push.</strong> Trae dudas el viernes.</li>
       </ol>
     </div>
   </div>
@@ -458,155 +520,141 @@ const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.ta
 document.querySelectorAll('section>.wrap,section>.wrap-n').forEach(el=>{el.classList.add('reveal');obs.observe(el);});
 const $=id=>document.getElementById(id);
 
-// ─── W1: Castillo ──────────────────────────────────────────────
-const casData={
-  public:{cmd:'ana.nombre',out:'"Ana"',cls:'ok',exp:'<strong>Acceso libre.</strong> Atributo público — cualquiera entra.'},
-  protected:{cmd:'ana._edad',out:'20  ⚠',cls:'warn',exp:'<strong>Funciona, pero no deberías.</strong> El guion bajo es una convención: "solo para la clase y sus hijas".'},
-  private:{cmd:'ana.__password',out:"AttributeError: 'Estudiante' object has no attribute '__password'",cls:'err',exp:'<strong>Python lo escondió.</strong> Renombró el atributo a <em>_Estudiante__password</em> (name mangling).'},
+// ─── W1: Anatomía interactiva ──────────────────────────────────
+const anatData={
+  class:{t:'class',x:'La palabra clave que crea un <strong>molde nuevo</strong>. Todo lo que sigue define cómo serán los objetos de este tipo.'},
+  cls:{t:'Estudiante',x:'El <strong>nombre de la clase</strong>. Por convención empieza con mayúscula. Es el molde — todavía no es un objeto.'},
+  def:{t:'def',x:'Define una función. Dentro de una clase, una función se llama <strong>método</strong>.'},
+  init:{t:'__init__',x:'El <strong>constructor</strong>. Python lo ejecuta solo cada vez que creas un objeto. Aquí nacen los atributos.'},
+  self:{t:'self',x:'El <strong>objeto específico</strong> que se está usando. Es el "yo" del objeto. Python lo pasa automáticamente.'},
+  attr:{t:'Atributo',x:'<strong>self.nombre</strong> guarda un dato dentro del objeto. Cada objeto tiene su propia copia.'},
+  list:{t:'Lista vacía',x:'<strong>self.materias = []</strong> arranca vacía. Se irá llenando cuando llames métodos que le agreguen cosas.'},
+  method:{t:'Método',x:'<strong>saludar()</strong> es algo que el objeto sabe hacer. Siempre recibe <strong>self</strong> como primer parámetro.'},
+  return:{t:'return',x:'Devuelve un valor a quien llamó al método. Sin <strong>return</strong>, el método no entrega nada.'},
+  fstring:{t:'f-string',x:'Texto con datos incrustados. <strong>{self.nombre}</strong> se reemplaza por el valor real del atributo.'},
 };
-document.querySelectorAll('.cas-try').forEach(b=>{
-  b.addEventListener('click',()=>{
-    const acc=b.dataset.acc;const d=casData[acc];
-    document.querySelectorAll('.cas-attr').forEach(a=>a.classList.remove('lit'));
-    $('att-'+acc).classList.add('lit');
-    $('cas-cmd').textContent=d.cmd;
-    $('cas-out').textContent=d.out;
-    $('cas-out').className='cas-result-out '+d.cls;
-    $('cas-exp').innerHTML=d.exp;
-    setTimeout(()=>$('att-'+acc).classList.remove('lit'),1500);
+document.querySelectorAll('#anat-code .t').forEach(tok=>{
+  tok.addEventListener('click',()=>{
+    document.querySelectorAll('#anat-code .t').forEach(x=>x.classList.remove('active'));
+    tok.classList.add('active');
+    const d=anatData[tok.dataset.e];
+    $('anat-title').textContent=d.t;
+    $('anat-text').innerHTML=d.x;
   });
 });
 
-// ─── W2: Constructor por defecto ──────────────────────────────
-const CD_DEFAULT_HIDDEN=`<span class="ln"><span class="kw">class</span> Estudiante:</span>
-<span class="ln">    <span class="kw">pass</span></span>
-<span class="ln ghost">    <span class="cm"># Python agrega:</span></span>
-<span class="ln ghost">    <span class="kw">def</span> __init__(<span class="self">self</span>):</span>
-<span class="ln ghost">        <span class="kw">pass</span>  <span class="cm"># no hace nada</span></span>`;
-const CD_DEFAULT_SHOWN=`<span class="ln"><span class="kw">class</span> Estudiante:</span>
-<span class="ln">    <span class="kw">pass</span></span>
-<span class="ln ghost lit">    <span class="cm"># Python agrega:</span></span>
-<span class="ln ghost lit">    <span class="kw">def</span> __init__(<span class="self">self</span>):</span>
-<span class="ln ghost lit">        <span class="kw">pass</span>  <span class="cm"># no hace nada</span></span>`;
-const CD_CUSTOM=`<span class="ln"><span class="kw">class</span> Estudiante:</span>
-<span class="ln">    <span class="kw">def</span> __init__(<span class="self">self</span>, nombre, edad):</span>
-<span class="ln">        <span class="self">self</span>.nombre = nombre</span>
-<span class="ln">        <span class="self">self</span>.edad = edad</span>`;
+// ─── W2: self ──────────────────────────────────────────────────
+let selfName='ana',selfAttr='Ana';
+document.querySelectorAll('.self-obj').forEach(o=>{
+  o.addEventListener('click',()=>{
+    document.querySelectorAll('.self-obj').forEach(x=>x.classList.remove('sel'));
+    o.classList.add('sel');
+    selfName=o.dataset.name;selfAttr=o.dataset.attr;
+    $('self-objname').textContent=selfName;
+    $('self-transname').textContent=selfName;
+    $('self-arrow').classList.remove('show');
+    $('self-trans').classList.remove('show');
+    $('self-out').innerHTML='';
+  });
+});
+$('self-run').addEventListener('click',()=>{
+  $('self-arrow').classList.remove('show');$('self-trans').classList.remove('show');$('self-out').innerHTML='';
+  setTimeout(()=>$('self-arrow').classList.add('show'),200);
+  setTimeout(()=>$('self-trans').classList.add('show'),700);
+  setTimeout(()=>{$('self-out').innerHTML='→ devuelve: <em>"Hola, soy '+selfAttr+'"</em>';},1300);
+});
 
-let cdMode=0; // 0: default hidden, 1: default shown, 2: custom
-function cdRender(){
-  const tb=$('cd-toggle'),cb=$('cd-custom');
-  if(cdMode===0){
-    $('cd-code').innerHTML=CD_DEFAULT_HIDDEN;
-    $('cd-call').textContent='ana = Estudiante()';
-    $('cd-attrs').innerHTML='(sin atributos — el __init__ default no hace nada)';
-    $('cd-msg').innerHTML='→ El objeto existe pero está <em>vacío</em>.';
-    tb.textContent='▶ Mostrar el invisible';tb.classList.add('on');
-    cb.textContent='▶ Con __init__ propio';cb.classList.remove('on');
-  }else if(cdMode===1){
-    $('cd-code').innerHTML=CD_DEFAULT_SHOWN;
-    $('cd-call').textContent='ana = Estudiante()';
-    $('cd-attrs').innerHTML='(sin atributos — el __init__ default no hace nada)';
-    $('cd-msg').innerHTML='→ <em>Sí existe</em> un __init__ — solo que no hace nada.';
-    tb.textContent='◀ Ocultar';tb.classList.remove('on');
-    cb.textContent='▶ Con __init__ propio';cb.classList.remove('on');
-  }else{
-    $('cd-code').innerHTML=CD_CUSTOM;
-    $('cd-call').textContent='ana = Estudiante("Ana", 20)';
-    $('cd-attrs').innerHTML='nombre: <span>"Ana"</span><br>edad: <span>20</span>';
-    $('cd-msg').innerHTML='→ Con tu __init__, controlas <em>qué se guarda</em>.';
-    tb.textContent='▶ Mostrar el invisible';tb.classList.remove('on');
-    cb.textContent='◀ Volver a default';cb.classList.add('on');
-  }
+// ─── W3: Instanciación ─────────────────────────────────────────
+function instRun(){
+  instReset();
+  // arg1 "Ana" flies to slot1
+  setTimeout(()=>{$('slot1').textContent='"Ana"';$('slot1').classList.add('filled');},400);
+  setTimeout(()=>{$('slot2').textContent='20';$('slot2').classList.add('filled');},900);
+  setTimeout(()=>{
+    $('obj-nombre').innerHTML='<span style="color:var(--ochre)">"Ana"</span>';
+    $('obj-edad').innerHTML='<span style="color:var(--blood)">20</span>';
+    $('inst-obj').classList.add('born');
+  },1500);
 }
-$('cd-toggle').addEventListener('click',()=>{cdMode=cdMode===0?1:0;cdRender();});
-$('cd-custom').addEventListener('click',()=>{cdMode=cdMode===2?0:2;cdRender();});
-cdRender();
-
-// ─── W3: Módulos y paquetes ────────────────────────────────────
-const modFiles={
-  main:{head:'📄 main.py · punto de entrada',imports:['estudiante','validador'],hint:'<strong>main.py</strong> importa de <strong>modelos/</strong> y <strong>utilidades/</strong>. Mira los archivos resaltados en oliva a la izquierda.',code:`<span class="ln"><span class="imp">from</span> modelos.estudiante <span class="imp">import</span> Estudiante</span>
-<span class="ln"><span class="imp">from</span> utilidades.validador <span class="imp">import</span> validar_email</span>
-<span class="ln"> </span>
-<span class="ln"><span class="kw">if</span> __name__ == <span class="str">"__main__"</span>:</span>
-<span class="ln">    ana = Estudiante(<span class="str">"Ana"</span>, 20)</span>
-<span class="ln">    ana.email = validar_email(<span class="str">"ana@uni.mx"</span>)</span>
-<span class="ln">    print(ana)</span>`},
-  init1:{head:'📄 modelos/__init__.py · marcador de paquete',imports:[],hint:'Un archivo <strong>__init__.py</strong> convierte una carpeta en un <em>paquete</em>. Puede estar vacío.',code:`<span class="ln"><span class="cm"># Hace que Python trate esta carpeta como un paquete.</span></span>
-<span class="ln"><span class="cm"># Puede estar vacío. O exportar cosas:</span></span>
-<span class="ln"><span class="imp">from</span> .estudiante <span class="imp">import</span> Estudiante</span>`},
-  estudiante:{head:'📄 modelos/estudiante.py · la clase',imports:[],hint:'Una clase por archivo. <strong>Limpio, encontrable, mantenible.</strong>',code:`<span class="ln"><span class="kw">class</span> Estudiante:</span>
-<span class="ln">    <span class="kw">def</span> __init__(<span class="self">self</span>, nombre, edad):</span>
-<span class="ln">        <span class="self">self</span>.nombre = nombre</span>
-<span class="ln">        <span class="self">self</span>.edad = edad</span>
-<span class="ln">        <span class="self">self</span>.email = <span class="kw">None</span></span>`},
-  materia:{head:'📄 modelos/materia.py · otra clase',imports:[],hint:'Hermana de Estudiante. Mismas reglas, mismo paquete.',code:`<span class="ln"><span class="kw">class</span> Materia:</span>
-<span class="ln">    <span class="kw">def</span> __init__(<span class="self">self</span>, clave, nombre):</span>
-<span class="ln">        <span class="self">self</span>.clave = clave</span>
-<span class="ln">        <span class="self">self</span>.nombre = nombre</span>`},
-  init2:{head:'📄 utilidades/__init__.py · marcador de paquete',imports:[],hint:'Otro paquete, mismas reglas.',code:`<span class="ln"><span class="cm"># utilidades es otro paquete del proyecto.</span></span>`},
-  validador:{head:'📄 utilidades/validador.py · helper',imports:[],hint:'Funciones de apoyo. <strong>No son clases</strong> — y eso está bien.',code:`<span class="ln"><span class="kw">def</span> validar_email(email):</span>
-<span class="ln">    <span class="kw">if</span> <span class="str">"@"</span> <span class="kw">in</span> email:</span>
-<span class="ln">        <span class="kw">return</span> email</span>
-<span class="ln">    <span class="kw">raise</span> ValueError(<span class="str">"Email inválido"</span>)</span>`}
-};
-function modRender(f){
-  const d=modFiles[f];
-  document.querySelectorAll('.mod-file').forEach(el=>{el.classList.remove('sel','imported');});
-  document.querySelector('.mod-file[data-f="'+f+'"]').classList.add('sel');
-  d.imports.forEach(im=>{const el=document.querySelector('.mod-file[data-f="'+im+'"]');if(el)el.classList.add('imported');});
-  $('mod-head').textContent=d.head;
-  $('mod-body').innerHTML=d.code;
-  $('mod-hint').innerHTML=d.hint;
+function instReset(){
+  $('slot1').textContent='?';$('slot1').classList.remove('filled');
+  $('slot2').textContent='?';$('slot2').classList.remove('filled');
+  $('obj-nombre').textContent='—';$('obj-edad').textContent='—';
+  $('inst-obj').classList.remove('born');
 }
-document.querySelectorAll('.mod-file').forEach(el=>el.addEventListener('click',()=>modRender(el.dataset.f)));
-modRender('main');
+$('inst-run').addEventListener('click',instRun);
+$('inst-reset').addEventListener('click',instReset);
 
-// ─── W4: __name__ gate ─────────────────────────────────────────
-document.querySelectorAll('[data-gt]').forEach(b=>{
+// ─── W4: Python vs Java ────────────────────────────────────────
+function pjLight(concept){
+  document.querySelectorAll('.pj-line').forEach(l=>{
+    l.classList.toggle('lit', l.dataset.c===concept);
+  });
+}
+document.querySelectorAll('[data-concept]').forEach(b=>{
   b.addEventListener('click',()=>{
-    const m=b.dataset.gt;
-    document.querySelectorAll('[data-gt]').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('[data-concept]').forEach(x=>x.classList.remove('on'));
     b.classList.add('on');
-    $('gt-scn-run').classList.toggle('active',m==='run');
-    $('gt-scn-import').classList.toggle('active',m==='import');
-    if(m==='run'){
-      $('gt-l2').className='ln runs';$('gt-l3').className='ln runs';
+    pjLight(b.dataset.concept);
+  });
+});
+pjLight('class');
+
+// ─── W5: Getters/Setters ───────────────────────────────────────
+let gsEdad=20;
+document.querySelectorAll('.gs-tries .btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const v=parseInt(b.dataset.v);
+    const val=$('gs-val'),fb=$('gs-fb');
+    $('gs-l-okv').classList.remove('flash-ok');$('gs-l-no').classList.remove('flash-no');
+    val.classList.remove('ok','no');
+    void val.offsetWidth;
+    if(v>=0&&v<=120){
+      gsEdad=v;val.textContent=v;val.classList.add('ok');
+      fb.textContent='✓ '+v+' es válido. Guardado.';fb.className='gs-feedback ok';
+      $('gs-l-okv').classList.add('flash-ok');
+      setTimeout(()=>val.classList.remove('ok'),1100);
     }else{
-      $('gt-l2').className='ln skips';$('gt-l3').className='ln skips';
+      val.classList.add('no');
+      fb.textContent='✗ '+v+' rechazado. La edad sigue en '+gsEdad+'.';fb.className='gs-feedback no';
+      $('gs-l-no').classList.add('flash-no');
+      setTimeout(()=>val.classList.remove('no'),500);
     }
+    setTimeout(()=>{$('gs-l-okv').classList.remove('flash-ok');$('gs-l-no').classList.remove('flash-no');},1300);
   });
 });
 
-// ─── W5: Dunders default ──────────────────────────────────────
-const dunders = {
-  '__name__': { cmd: "Estudiante.__name__", res: "'Estudiante'", explain: 'El <strong>nombre de la clase</strong> como string. Mismo nombre que <code>__name__</code> a nivel módulo, pero distinto significado. Útil para logs, debug y mensajes de error.' },
-  '__doc__': { cmd: "Estudiante.__doc__", res: "'Representa a un alumno del curso.'", explain: 'La <strong>docstring</strong> de la clase — el texto entre triples comillas justo después de la línea <code>class</code>. Es <code>None</code> si no la escribes.' },
-  '__module__': { cmd: "Estudiante.__module__", res: "'modelos.estudiante'", explain: 'El <strong>módulo donde la clase fue definida</strong>. Si corres el archivo directo, normalmente vale <code>"__main__"</code>.' },
-  '__dict__': { cmd: "Estudiante.__dict__", res: "mappingproxy({'__module__': '__main__',\n   '__init__': <function ...>,\n   '__str__': <function ...>})", explain: 'Un <strong>diccionario interno</strong> con los atributos y métodos definidos en la clase. Python lo usa para resolver nombres por debajo.' },
-  '__bases__': { cmd: "Estudiante.__bases__", res: "(<class 'object'>,)", explain: 'Las <strong>clases padre</strong>. Si no heredas de nadie explícitamente, heredas de <code>object</code> — de ahí vienen los métodos default.' },
-  '__mro__': { cmd: "Estudiante.__mro__", res: "(<class 'Estudiante'>, <class 'object'>)", explain: '<strong>Method Resolution Order</strong> — el orden en que Python busca métodos al llamar <code>ana.saludar()</code>. Clave para entender herencia múltiple.' },
-  '__class__': { cmd: "ana.__class__", res: "<class 'Estudiante'>", explain: 'En una <strong>instancia</strong>, apunta a su clase. <code>ana.__class__.__name__</code> te da el nombre de la clase de cualquier objeto.' },
-  '__init__': { cmd: "Estudiante.__init__", res: "<slot wrapper '__init__' of 'object' objects>", explain: 'El <strong>constructor</strong>. Si no lo defines, heredas el de <code>object</code> (vacío). Si lo defines, sustituye al default — fue el tema del widget III.' },
-  '__str__': { cmd: "str(ana)", res: "'<__main__.Estudiante object at 0x7f8b2c0a1d30>'", explain: 'La <strong>representación legible</strong>. El default es feo (lugar en memoria); por eso defines un <code>__str__</code> propio (Sesión 3).' },
-  '__repr__': { cmd: "repr(ana)", res: "'<__main__.Estudiante object at 0x7f8b2c0a1d30>'", explain: 'La representación <strong>para desarrolladores</strong> — la que aparece en el REPL o al imprimir listas. Por convención, debería ser código válido para reconstruir el objeto.' },
-  '__eq__': { cmd: "ana1 == ana2", res: "False", explain: 'La <strong>igualdad</strong>. Por default compara <em>identidad</em> (lugar en memoria), no datos. Por eso dos objetos con los mismos datos son distintos hasta que defines <code>__eq__</code>.' },
-  '__hash__': { cmd: "hash(ana)", res: "8753290478", explain: 'El <strong>hash</strong> — un número que identifica al objeto. Necesario para usarlo como llave de diccionario o en sets. Si defines <code>__eq__</code>, también debes definir <code>__hash__</code>.' },
-};
-function dunRender(key){
-  const d=dunders[key];
-  $('dun-cmd').textContent=d.cmd;
-  $('dun-res').textContent=d.res;
-  $('dun-explain').innerHTML=d.explain;
-}
-document.querySelectorAll('.dun-chip').forEach(c=>{
-  c.addEventListener('click',()=>{
-    document.querySelectorAll('.dun-chip').forEach(x=>x.classList.remove('on'));
-    c.classList.add('on');
-    dunRender(c.dataset.d);
-  });
+// ─── W6: __str__ ───────────────────────────────────────────────
+let strOn=false;
+$('str-toggle').addEventListener('click',()=>{
+  strOn=!strOn;
+  const out=$('str-out'),m=$('str-method'),btn=$('str-toggle');
+  if(strOn){
+    out.innerHTML='Estudiante(Ana, 20)';out.className='str-out pretty';
+    m.classList.remove('off');
+    btn.textContent='− Quitar __str__';btn.classList.remove('on');
+  }else{
+    out.innerHTML='&lt;__main__.Estudiante object at 0x7f8b2c0a1d30&gt;';out.className='str-out ugly';
+    m.classList.add('off');
+    btn.textContent='+ Agregar __str__';btn.classList.add('on');
+  }
 });
-dunRender('__name__');
+
+// ─── W6b: __eq__ / __hash__ ────────────────────────────────────
+let eqOn=false;
+$('eq-toggle').addEventListener('click',()=>{
+  eqOn=!eqOn;
+  const b=$('eq-bool'),ex=$('eq-explain'),btn=$('eq-toggle');
+  if(eqOn){
+    b.textContent='True';b.className='eq-bool yes';
+    ex.innerHTML='Con <strong>__eq__</strong>, Python compara los <strong>datos</strong> (nombre y edad). Y <strong>__hash__</strong> permite usarlos en sets y como llaves de diccionario.';
+    btn.textContent='− Quitar __eq__';btn.classList.remove('on');
+  }else{
+    b.textContent='False';b.className='eq-bool no';
+    ex.innerHTML='Sin <strong>__eq__</strong>, Python compara su lugar en memoria. Son objetos distintos aunque tengan los mismos datos.';
+    btn.textContent='+ Definir __eq__ y __hash__';btn.classList.add('on');
+  }
+});
 </script>
 </body>
 </html>
