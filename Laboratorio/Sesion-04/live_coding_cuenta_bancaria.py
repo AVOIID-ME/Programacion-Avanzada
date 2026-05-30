@@ -104,7 +104,44 @@ class CuentaBancaria:
     """TODO Paso 1 → 9: construir aquí, paso a paso, frente a la clase."""
 
     def __init__(self, titular, numero_cuenta, nip, saldo_inicial=0):
+        # setear saldo inicial
+        if saldo_inicial>= 0:
+            self.__saldo = saldo_inicial
+        else:
+            raise ValueError("No se puede aperturar una cuenta con saldo negativo")
+        
+        #setear nip
+        if type(nip) ==str and len(nip) ==4:
+            self.__nip = nip
+        else:
+            raise ValueError("El nip debe ser un string y debe ser exactamente cuatro digitos")
+
         # TODO Paso 1: guarda los atributos tal cual los recibes.
+        self.titular = titular
+        self._numero_cuenta = numero_cuenta
+        self.__nip = nip
+        self.__saldo = saldo_inicial
+    def depositar(self,monto):
+        if monto <=0:
+            raise ValueError ("El Monto debe ser mayor a 0")
+        else:
+            self.__saldo += monto
+    def getSaldo(self):
+        return self.__saldo
+    
+    def setSaldo(self,saldoNuevo):
+        self.__saldo = saldoNuevo
+    
+    def __str__(self):
+        return f"El Usuario es {self.titular}, tiene {self.__saldo}, tu nip es {self.nip}"
+   ##hash es para generar un identificador :)
+    def __hash__(self):
+        print("Hashing:", hash(self._numero_cuenta))
+        return hash(self._numero_cuenta) 
+
+
+
+        
         # TODO Paso 2: renómbralos a _protegido / __privado.
         # TODO Paso 3: agrega validaciones.
         pass
@@ -127,6 +164,12 @@ if __name__ == "__main__":
     print("=" * 50)
     print(" Demo · Banco")
     print("=" * 50)
+    usuario1 = CuentaBancaria("Juan", numero_cuenta=1234567 , nip ="1234" , saldo_inicial=0)
+    print(f"El Usuario se llama {usuario.titular} y su numero de cuenta es {usuario._numero_cuenta}")
+
+    print(usuario.__str__())
+
+    print(usuario.__hash__())
 
     # ---- Paso 1-3 ----
     # cuenta = CuentaBancaria("Daniel", "1234567890", "4242", saldo_inicial=1000)
