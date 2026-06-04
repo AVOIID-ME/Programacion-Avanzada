@@ -164,12 +164,10 @@ if __name__ == "__main__":
     print("=" * 50)
     print(" Demo · Banco")
     print("=" * 50)
-    usuario1 = CuentaBancaria("Juan", numero_cuenta=1234567 , nip ="1234" , saldo_inicial=0)
-    print(f"El Usuario se llama {usuario.titular} y su numero de cuenta es {usuario._numero_cuenta}")
+    usuario1 = CuentaBancaria("Juan", 123456,"4560",0)
+    usuario2 = CuentaBancaria("Pepe", 234567, "4560", 0)
 
-    print(usuario.__str__())
-
-    print(usuario.__hash__())
+    print(usuario1.hash)
 
     # ---- Paso 1-3 ----
     # cuenta = CuentaBancaria("Daniel", "1234567890", "4242", saldo_inicial=1000)
