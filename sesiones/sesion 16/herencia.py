@@ -7,7 +7,7 @@ class Abuelo:
 
 class Padre(Abuelo):
     def __init__(self, nombre, abuelo):
-        super().__init__(self,abuelo)
+        Abuelo.__init__(self,abuelo)
         self.nombrePadre = nombre
 
     def saludo(self):
@@ -15,7 +15,7 @@ class Padre(Abuelo):
 
 class Madre(Abuelo):
     def __init__(self, nombre, abuelo):
-        super().__init__(self,abuelo)
+        Abuelo.__init__(self,abuelo)
         self.nombreMadre = nombre
 
     def saludo(self):
@@ -23,8 +23,8 @@ class Madre(Abuelo):
 
 class Hijo(Padre, Madre):
     def __init__(self, nombre, padre, madre, abuelo):
-        padre.__init__(self,padre, abuelo)
-        madre.__init__(self,madre, abuelo)
+        Padre.__init__(self,padre, abuelo)
+        Madre.__init__(self,madre, abuelo)
         self.nombreHijo = nombre
 
     def saludo(self):
