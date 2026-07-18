@@ -1,0 +1,23 @@
+public class Motocicleta {
+    private int cilindraje;
+
+    public Motocicleta(int cilindraje, String marca, String modelo, int año, double combustible){
+        super(marca, modelo, año, combustible);
+        this.cilindraje = cilindraje;
+    }
+
+    public int getCilindraje(){
+        return.cilindraje;
+    }
+
+    public void setCilindraje(int cilindraje){
+        this.cilindraje = cilindraje;
+    }
+
+    @Override
+    public void mostrarDetalles(){
+        System.out.println(
+            String.format("Cilindraje: ", cilindraje)
+        );
+    }
+}
