@@ -1,0 +1,12 @@
+public class AsientosAgotadosException extends Exception{
+    private Integer disponibles;
+
+    public AsientosAgotadosException(String msg, Integer disp){
+        super(msg);
+        this.disponibles = disp;
+    }
+
+    public Integer getDisponibles(){
+        return this.disponibles
+    }
+}

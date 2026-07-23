@@ -1,0 +1,81 @@
+public class Funcion{
+    private String pelicula;
+    private String fecha;
+    private String hora;
+    private Integer sala;
+    private ArrayList<Boolean> asientos;
+
+    public Funcion(String pelicula, String fecha, String hora, Integer sala){
+        this.pelicula = pelicula;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.sala = sala;
+    }
+
+    public String getPelicula(){
+        return pelicula;
+    }
+
+    public void setPelicula(String pelicula){
+        this.pelicula = pelicula;
+    }
+
+    public String getFecha(){
+        return fecha;
+    }
+
+    public void setFecha(String fecha){
+        this.fecha = fecha;
+    }
+
+
+    public String getHora(){
+        return hora;
+    }
+
+    public void setHora(String hora){
+        this.fecha = fecha;
+    }
+
+    public Integer getSala(){
+        return sala;
+    }
+
+    public void setSala(Integer sala){
+        this.sala = sala;
+    }
+
+    public ArrayList<Boolean> getAsientos(){
+        return asientos;
+    }
+
+    public int disponible(){
+        //TODO: cuenta cuantos asientos siguen en false
+        int contadorAsientosVacios = 0;
+        for (i=0 ; i < asientos.size(); i++){
+            if (asientos.get(i) == false){
+                contadorAsientos += 1;
+            }
+        }
+        return contadorAsientosVacios;
+    }
+
+    public int[] reservar(int cantidad) throws AsientosAgotadosException{
+        Integer asientosDisponibles = disponibles()
+        if(cantidad > disponibles()){
+            throw new AsientosAgotadosException("No hay Asientos Disponibles", asientosDisponibles())
+        } else {
+            for (int indice = 0; <asientos.size(); inidce++){
+                if (asientos.get(indice) == false){
+                    asientos.set(indice, true);
+                    asientosAsignados.add(indice);
+
+                }
+            }
+            return asientosAsignados;
+        }
+    }
+
+
+
+}

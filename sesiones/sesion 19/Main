@@ -1,0 +1,27 @@
+import java.util.ArrayList;
+
+public class Main {
+    
+    public void reservar(Funcion funcion, String cantidad){
+        try {
+            Integer boletos = Integer.parseInt(cantidad);
+            ArrayList<Integer> reservacion = funcion.reservar(boletos);
+        }catch (NumberFormatException e){
+            System.out.println("Inserta un Numero Correcto de Boletos");
+        }catch (AsientosAgotadosException asientosAgotados){
+            System.out.println("Solo quedan "+ asientosAgotados.getDisponibles() + " lugares disponibles.");
+        }catch (NullPointerException nullPointer){
+            System.out.println("Por favor inserta un valor");
+        }finally {
+            System.out.println("Sesion de reserva cerrada");
+        }
+    }
+
+    public static void main(String[]){
+        Funcion moana = new Funcion("moana 2", "22/07/2026", "20:00", "2");
+
+        System.out.print("Ingresa la cantidad de boletos: ");
+
+        reservar(moana, cantidad:"3")
+    }
+}
